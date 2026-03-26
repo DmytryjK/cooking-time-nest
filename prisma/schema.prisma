@@ -1,0 +1,62 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RecipeImageType {
+  MAIN
+  PREVIEW
+}
+
+model User {
+  id                   Int      @default(autoincrement()) @id
+  email                String   @unique
+  password             String
+  name                 String?
+  recipes              Recipe[]
+  favoriteRecipeIds    Int[]    @default([])
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Recipe {
+  id          Int                @default(autoincrement()) @id
+  title       String
+  description String?
+  ingredients RecipeIngredient[]
+  userId      Int?
+  user        User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  images      RecipeImage[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([createdAt])
+  @@index([title])
+}
+
+model RecipeIngredient {
+  id       Int    @default(autoincrement()) @id
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  name     String
+  amount   Float
+  unit     String
+
+  @@index([recipeId])
+  @@index([name])
+}
+
+model RecipeImage {
+  id        Int               @default(autoincrement()) @id
+  recipeId  Int
+  recipe    Recipe            @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  publicId  String
+  type      RecipeImageType
+  createdAt DateTime          @default(now())
+}
