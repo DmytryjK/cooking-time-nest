@@ -36,6 +36,7 @@ RUN yarn prisma generate
 
 # Копируем собранное приложение
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist/prisma.config.js ./
 
 # Открываем порт
 EXPOSE 3000
