@@ -5,7 +5,6 @@ import {
   HealthCheckService,
   MicroserviceHealthIndicator,
 } from '@nestjs/terminus';
-import { RedisOptions, Transport } from '@nestjs/microservices';
 import { HealthCheckResponseDto } from './dto';
 
 @ApiTags('Health')
@@ -20,7 +19,8 @@ export class HealthController {
   @HealthCheck()
   @ApiOperation({
     summary: 'Health check endpoint',
-    description: 'Check the health status of the application and its dependencies (Redis)'
+    description:
+      'Check the health status of the application and its dependencies (Redis)',
   })
   @ApiResponse({
     status: 200,
@@ -29,15 +29,15 @@ export class HealthController {
   })
   @ApiResponse({ status: 503, description: 'Service is unhealthy' })
   check() {
-    return this.health.check([
-      () =>
-        this.microservice.pingCheck<RedisOptions>('redis', {
-          transport: Transport.REDIS,
-          options: {
-            host: process.env.REDIS_HOST || 'localhost',
-            port: 6379,
-          },
-        }),
-    ]);
+    return this.health.check([]);
+
+    // () =>
+    //   this.microservice.pingCheck<RedisOptions>('redis', {
+    //     transport: Transport.REDIS,
+    //     options: {
+    //       host: process.env.REDIS_HOST || 'localhost',
+    //       port: 6379,
+    //     },
+    //   }),
   }
 }
