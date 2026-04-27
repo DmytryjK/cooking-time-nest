@@ -42,4 +42,4 @@ COPY --from=builder /app/dist/prisma.config.js ./
 EXPOSE 3000
 
 # Запускаем приложение
-CMD ["sh", "-c", "yarn prisma migrate deploy && node dist/src/main"]
+CMD ["node", "dist/src/main"]
