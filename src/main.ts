@@ -1,11 +1,14 @@
-import { config } from 'dotenv';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 import { APP_CONSTANTS } from './common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
-config();
+import { NotFoundFilter } from './filters/not-found.filter';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -14,15 +17,26 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  app.use(cookieParser());
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      forbidNonWhitelisted: true,
       transform: true,
     }),
   );
 
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.enableCors({
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
+
   app.setGlobalPrefix(APP_CONSTANTS.GLOBAL_PREFIX);
+
+  app.useGlobalFilters(new NotFoundFilter());
 
   // Swagger configuration
   const config = new DocumentBuilder()
@@ -42,8 +56,8 @@ async function bootstrap() {
     )
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
 
   const port = process.env.PORT || APP_CONSTANTS.DEFAULT_PORT;
 

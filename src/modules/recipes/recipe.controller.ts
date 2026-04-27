@@ -4,40 +4,97 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
-  ApiQuery,
   ApiParam,
+  ApiConsumes,
+  ApiBody,
 } from '@nestjs/swagger';
+import { SerializeOptions } from '@nestjs/common';
 import { RecipesService } from './recipe.service';
 import { Recipe } from '@/generated/prisma/client';
-import { OptionalJwtAuthGuard } from '@/modules/auth/guards';
-import { RecipeOwnershipGuard } from './guards';
+import { JwtAuthGuard, OptionalJwtAuthGuard } from '@/modules/auth/guards';
+import { RecipeAccessGuard } from './guards';
 import { CurrentUser } from '@/modules/auth/decorators';
-import { CreateRecipeDto, UpdateRecipeDto, RecipeResponseDto } from './dto';
-import { UserModel } from '@/generated/prisma/models';
+import {
+  CreateRecipeDto,
+  UpdateRecipeDto,
+  RecipeResponseDto,
+  GetRecipesQueryDto,
+} from './dto';
+import type { UserModel } from '@/generated/prisma/models';
 import {
   ErrorResponseDto,
   UnauthorizedResponseDto,
   ForbiddenResponseDto,
   NotFoundResponseDto,
 } from '@/common/dto';
+import {
+  type RecipeImageFiles,
+  RecipeImageValidationPipe,
+} from './pipes/recipe-images-validation.pipe';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { RecipeResponse } from './types/recipe-response.type';
 
 @ApiTags('Recipes')
 @Controller('recipes')
 export class RecipesController {
   constructor(private readonly recipeService: RecipesService) {}
 
+  @Get('favorites')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @SerializeOptions({ type: RecipeResponseDto })
+  @ApiOperation({
+    summary: 'Get all favorite recipes',
+    description: 'Retrieve all favorite recipes for authorized user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of recipes',
+    type: [RecipeResponseDto],
+  })
+  getAllFavoriteRecipes(@CurrentUser() user: UserModel): Promise<Recipe[]> {
+    return this.recipeService.favoriteRecipes(user);
+  }
+
+  @Get('/recently-viewed-recipes')
+  @UseGuards(JwtAuthGuard)
+  @SerializeOptions({ type: RecipeResponseDto })
+  @ApiOperation({
+    summary: 'Get recently viewed recipes for user',
+    description: '',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Recipes found',
+    type: RecipeResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Recipes not found',
+    type: NotFoundResponseDto,
+  })
+  getRecentlyViewedRecipes(
+    @CurrentUser() user: UserModel,
+  ): Promise<RecipeResponse[]> {
+    return this.recipeService.recentlyViewedRecipes(user);
+  }
+
   @Get(':id')
+  @UseGuards(OptionalJwtAuthGuard)
+  @SerializeOptions({ type: RecipeResponseDto })
   @ApiOperation({
     summary: 'Get recipe by ID',
     description: 'Retrieve a single recipe by its unique identifier',
@@ -46,7 +103,7 @@ export class RecipesController {
     name: 'id',
     description: 'Recipe ID',
     type: String,
-    example: '1',
+    example: '550e8400-e29b-41d4-a716-446655440000',
   })
   @ApiResponse({
     status: 200,
@@ -58,29 +115,24 @@ export class RecipesController {
     description: 'Recipe not found',
     type: NotFoundResponseDto,
   })
-  getRecipeById(@Param('id', ParseIntPipe) id: number): Promise<Recipe | null> {
-    return this.recipeService.recipe({ id });
+  getRecipeById(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user?: UserModel,
+  ): Promise<RecipeResponse> {
+    return this.recipeService.recipe(
+      { id },
+      { ingredients: true, category: true, images: true },
+      user,
+    );
   }
 
   @Get()
+  @UseGuards(OptionalJwtAuthGuard)
+  @SerializeOptions({ type: RecipeResponseDto })
   @ApiOperation({
     summary: 'Get all recipes with search capability',
     description:
       'Retrieve all recipes with optional search by title and description',
-  })
-  @ApiQuery({
-    name: 'search',
-    required: false,
-    description: 'Search by title and description',
-    type: String,
-    example: 'pizza',
-  })
-  @ApiQuery({
-    name: 'ingredients',
-    required: false,
-    description: 'Filter by ingredients',
-    type: String,
-    example: 'flour',
   })
   @ApiResponse({
     status: 200,
@@ -88,37 +140,31 @@ export class RecipesController {
     type: [RecipeResponseDto],
   })
   getAllRecipes(
-    @Query('search') search?: string,
-    @Query('ingredients') ingredients?: string,
-  ): Promise<Recipe[]> {
-    const where: any = {};
-
-    // Поиск по названию рецепта
-    if (search) {
-      where.title = { contains: search, mode: 'insensitive' };
-    }
-
-    // Поиск по ингредиентам (OR - хотя бы один подходит)
-    if (ingredients) {
-      const ingredientList = ingredients.split(',').map((i) => i.trim());
-
-      where.OR = ingredientList.map((ing) => ({
-        ingredients: {
-          some: {
-            name: { contains: ing, mode: 'insensitive' },
-          },
-        },
-      }));
-    }
-
-    return this.recipeService.recipes({
-      where,
-    });
+    @CurrentUser() user: UserModel | undefined,
+    @Query() query: GetRecipesQueryDto,
+  ): Promise<RecipeResponse[]> {
+    return this.recipeService.recipes(query, user);
   }
 
-  @Post()
+  @Post('new')
   @UseGuards(OptionalJwtAuthGuard)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'mainImage', maxCount: 1 },
+      { name: 'previewImage', maxCount: 1 },
+    ]),
+  )
   @ApiBearerAuth('JWT-auth')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        mainImage: { type: 'string', format: 'binary' },
+        previewImage: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @ApiOperation({
     summary: 'Create a new recipe',
     description:
@@ -134,34 +180,35 @@ export class RecipesController {
     description: 'Invalid data',
     type: ErrorResponseDto,
   })
-  createRecipe(
-    @Body() createRecipeDto: CreateRecipeDto,
-    @CurrentUser() user: UserModel | undefined,
+  async createRecipe(
+    @UploadedFiles(new RecipeImageValidationPipe())
+    files: RecipeImageFiles,
+    @Body()
+    recipe: CreateRecipeDto,
+    @CurrentUser() user?: UserModel,
   ): Promise<Recipe> {
-    const { title, description, ingredients } = createRecipeDto;
-    const authorId = user?.id;
-
-    return this.recipeService.createRecipe({
-      title,
-      description,
-      ingredients: {
-        create: ingredients.map((ing) => ({
-          name: ing.name,
-          amount: ing.amount,
-          unit: ing.unit,
-        })),
-      },
-      ...(authorId && {
-        user: {
-          connect: { id: authorId },
-        },
-      }),
-    });
+    return this.recipeService.createRecipe({ files, recipe, user });
   }
 
-  @Put(':id')
-  @UseGuards(OptionalJwtAuthGuard, RecipeOwnershipGuard)
+  @Put('update/:id')
+  @UseGuards(OptionalJwtAuthGuard)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'mainImage', maxCount: 1 },
+      { name: 'previewImage', maxCount: 1 },
+    ]),
+  )
   @ApiBearerAuth('JWT-auth')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        mainImage: { type: 'string', format: 'binary' },
+        previewImage: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @ApiOperation({
     summary: 'Update recipe',
     description: 'Update an existing recipe. Only recipe owner can update it',
@@ -170,7 +217,7 @@ export class RecipesController {
     name: 'id',
     description: 'Recipe ID',
     type: String,
-    example: '1',
+    example: '550e8400-e29b-41d4-a716-446655440000',
   })
   @ApiResponse({
     status: 200,
@@ -198,32 +245,17 @@ export class RecipesController {
     type: NotFoundResponseDto,
   })
   updateRecipe(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateRecipeDto: UpdateRecipeDto,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body()
+    updatedRecipe: UpdateRecipeDto,
+    @UploadedFiles()
+    newImages?: RecipeImageFiles,
   ): Promise<Recipe> {
-    const { title, description, ingredients } = updateRecipeDto;
-
-    return this.recipeService.updateRecipe({
-      where: { id },
-      data: {
-        ...(title && { title }),
-        ...(description !== undefined && { description }),
-        ...(ingredients && {
-          ingredients: {
-            deleteMany: {}, // Удаляем старые ингредиенты
-            create: ingredients.map((ing) => ({
-              name: ing.name,
-              amount: ing.amount,
-              unit: ing.unit,
-            })),
-          },
-        }),
-      },
-    });
+    return this.recipeService.updateRecipe(id, updatedRecipe, newImages);
   }
 
   @Delete(':id')
-  @UseGuards(OptionalJwtAuthGuard, RecipeOwnershipGuard)
+  @UseGuards(JwtAuthGuard, RecipeAccessGuard)
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Delete recipe',
@@ -233,7 +265,7 @@ export class RecipesController {
     name: 'id',
     description: 'Recipe ID',
     type: String,
-    example: '1',
+    example: '550e8400-e29b-41d4-a716-446655440000',
   })
   @ApiResponse({
     status: 200,
@@ -255,7 +287,7 @@ export class RecipesController {
     description: 'Recipe not found',
     type: NotFoundResponseDto,
   })
-  deleteRecipe(@Param('id', ParseIntPipe) id: number): Promise<Recipe> {
+  deleteRecipe(@Param('id', ParseUUIDPipe) id: string): Promise<Recipe> {
     return this.recipeService.deleteRecipe({ id });
   }
 }

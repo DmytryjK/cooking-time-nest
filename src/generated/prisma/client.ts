@@ -48,7 +48,32 @@ export type User = Prisma.UserModel
  */
 export type Recipe = Prisma.RecipeModel
 /**
+ * Model RecipeIngredient
+ * 
+ */
+export type RecipeIngredient = Prisma.RecipeIngredientModel
+/**
  * Model RecipeImage
  * 
  */
 export type RecipeImage = Prisma.RecipeImageModel
+/**
+ * Model FavoriteRecipe
+ * 
+ */
+export type FavoriteRecipe = Prisma.FavoriteRecipeModel
+/**
+ * Model RecentlyViewedRecipe
+ * 
+ */
+export type RecentlyViewedRecipe = Prisma.RecentlyViewedRecipeModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model RefreshToken
+ * 
+ */
+export type RefreshToken = Prisma.RefreshTokenModel

@@ -1,20 +1,26 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { SignupDto, LoginDto, AuthResponseDto, ProfileResponseDto } from './dto';
-import { JwtAuthGuard } from './guards';
+import { SignupDto, LoginDto, AuthResponseDto } from './dto';
+import {
+  ErrorResponseDto,
+  UnauthorizedResponseDto,
+  ConflictResponseDto,
+} from '@/common/dto';
 import { CurrentUser } from './decorators';
-import { ErrorResponseDto, UnauthorizedResponseDto, ConflictResponseDto } from '@/common/dto';
+import { JwtAuthGuard } from './guards';
+import { type UserModel } from '@/generated/prisma/models';
+import { type Response, type Request } from 'express';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('signup')
+  @Post('sign-up')
   @ApiOperation({
     summary: 'Register a new user',
-    description: 'Create a new user account with email and password'
+    description: 'Create a new user account with email and password',
   })
   @ApiResponse({
     status: 201,
@@ -31,14 +37,17 @@ export class AuthController {
     description: 'User already exists',
     type: ConflictResponseDto,
   })
-  async signup(@Body() signupDto: SignupDto) {
-    return this.authService.signup(signupDto);
+  signup(
+    @Body() signupDto: SignupDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.authService.signup(signupDto, res);
   }
 
-  @Post('login')
+  @Post('sign-in')
   @ApiOperation({
     summary: 'Login to the system',
-    description: 'Authenticate user and receive JWT token'
+    description: 'Authenticate user and receive JWT token',
   })
   @ApiResponse({
     status: 200,
@@ -50,32 +59,49 @@ export class AuthController {
     description: 'Invalid credentials',
     type: UnauthorizedResponseDto,
   })
-  async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
+    return this.authService.login(loginDto, res);
   }
 
-  @Get('profile')
+  @Post('sign-out')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
   @ApiOperation({
-    summary: 'Get current user profile',
-    description: 'Get authenticated user information'
+    summary: 'Logout from the system',
+    description: 'Logout user and remove JWT token',
   })
   @ApiResponse({
     status: 200,
-    description: 'User profile',
-    type: ProfileResponseDto,
+    description: 'Successfully logged out',
+    type: AuthResponseDto,
   })
   @ApiResponse({
     status: 401,
-    description: 'Unauthorized',
+    description: 'Invalid credentials',
     type: UnauthorizedResponseDto,
   })
-  getProfile(@CurrentUser() user: any) {
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-    };
+  logout(
+    @CurrentUser() user: UserModel,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.authService.logout(user.id, res);
+  }
+
+  @Post('refresh')
+  @ApiOperation({
+    summary: 'Refresh access token',
+    description: 'Refresh access token',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully refreshed',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Invalid credentials',
+    type: UnauthorizedResponseDto,
+  })
+  refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.authService.refresh(req, res);
   }
 }

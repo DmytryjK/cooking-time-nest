@@ -6,17 +6,19 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { RecipesService } from '../recipe.service';
+import { User } from '@/generated/prisma/client';
 
 @Injectable()
-export class RecipeOwnershipGuard implements CanActivate {
+export class RecipeAccessGuard implements CanActivate {
   constructor(private recipesService: RecipesService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const recipeId = parseInt(request.params.id);
-    const currentUser = request.user; // Может быть undefined для неавторизованных пользователей
+    const recipeId: string = request.params.id;
+    const currentUser = request.user as User | undefined;
+    const isAdmin = currentUser?.role === 'admin';
 
-    if (isNaN(recipeId)) {
+    if (!recipeId) {
       throw new NotFoundException('Invalid recipe ID');
     }
 
@@ -37,7 +39,7 @@ export class RecipeOwnershipGuard implements CanActivate {
       throw new ForbiddenException('You must be logged in to edit this recipe');
     }
 
-    if (recipe.userId !== currentUser.id) {
+    if (!isAdmin && recipe.userId !== currentUser.id) {
       throw new ForbiddenException('You can only edit your own recipes');
     }
 

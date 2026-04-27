@@ -1,10 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/database/prisma/prisma.service';
 import { User, Prisma } from '@/generated/prisma/client';
+import { Response, Request } from '@nestjs/common';
+import { RecipesService } from '../recipes';
+import { RecipeInteractionsFacade } from '../recipe-interactions/recipe-interactions.facade';
+import { RecipeResponse } from '../recipes/types/recipe-response.type';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private recipeService: RecipesService,
+    private recipeInteractionsFacade: RecipeInteractionsFacade,
+  ) {}
 
   user(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
@@ -52,5 +60,25 @@ export class UsersService {
     return this.prisma.user.delete({
       where,
     });
+  }
+
+  async toggleFavorite(
+    userId: string,
+    recipeId: string,
+  ): Promise<RecipeResponse | null> {
+    const favorite = await this.recipeInteractionsFacade.toggleFavorites(
+      userId,
+      recipeId,
+    );
+
+    const recipe = await this.recipeService.recipe(
+      { id: recipeId },
+      { ingredients: true, category: true, images: true },
+    );
+
+    return {
+      ...recipe,
+      isFavorite: favorite.isFavorite,
+    };
   }
 }

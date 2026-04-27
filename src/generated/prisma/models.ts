@@ -10,5 +10,10 @@
  */
 export type * from './models/User.js'
 export type * from './models/Recipe.js'
+export type * from './models/RecipeIngredient.js'
 export type * from './models/RecipeImage.js'
+export type * from './models/FavoriteRecipe.js'
+export type * from './models/RecentlyViewedRecipe.js'
+export type * from './models/Category.js'
+export type * from './models/RefreshToken.js'
 export type * from './commonInputTypes.js'

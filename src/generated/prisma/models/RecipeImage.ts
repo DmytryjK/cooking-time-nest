@@ -20,25 +20,13 @@ export type RecipeImageModel = runtime.Types.Result.DefaultSelection<Prisma.$Rec
 
 export type AggregateRecipeImage = {
   _count: RecipeImageCountAggregateOutputType | null
-  _avg: RecipeImageAvgAggregateOutputType | null
-  _sum: RecipeImageSumAggregateOutputType | null
   _min: RecipeImageMinAggregateOutputType | null
   _max: RecipeImageMaxAggregateOutputType | null
 }
 
-export type RecipeImageAvgAggregateOutputType = {
-  id: number | null
-  recipeId: number | null
-}
-
-export type RecipeImageSumAggregateOutputType = {
-  id: number | null
-  recipeId: number | null
-}
-
 export type RecipeImageMinAggregateOutputType = {
-  id: number | null
-  recipeId: number | null
+  id: string | null
+  recipeId: string | null
   imageUrl: string | null
   publicId: string | null
   type: $Enums.RecipeImageType | null
@@ -46,8 +34,8 @@ export type RecipeImageMinAggregateOutputType = {
 }
 
 export type RecipeImageMaxAggregateOutputType = {
-  id: number | null
-  recipeId: number | null
+  id: string | null
+  recipeId: string | null
   imageUrl: string | null
   publicId: string | null
   type: $Enums.RecipeImageType | null
@@ -64,16 +52,6 @@ export type RecipeImageCountAggregateOutputType = {
   _all: number
 }
 
-
-export type RecipeImageAvgAggregateInputType = {
-  id?: true
-  recipeId?: true
-}
-
-export type RecipeImageSumAggregateInputType = {
-  id?: true
-  recipeId?: true
-}
 
 export type RecipeImageMinAggregateInputType = {
   id?: true
@@ -141,18 +119,6 @@ export type RecipeImageAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: RecipeImageAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: RecipeImageSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: RecipeImageMinAggregateInputType
@@ -183,22 +149,18 @@ export type RecipeImageGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: RecipeImageCountAggregateInputType | true
-  _avg?: RecipeImageAvgAggregateInputType
-  _sum?: RecipeImageSumAggregateInputType
   _min?: RecipeImageMinAggregateInputType
   _max?: RecipeImageMaxAggregateInputType
 }
 
 export type RecipeImageGroupByOutputType = {
-  id: number
-  recipeId: number
+  id: string
+  recipeId: string
   imageUrl: string
   publicId: string
   type: $Enums.RecipeImageType
   createdAt: Date
   _count: RecipeImageCountAggregateOutputType | null
-  _avg: RecipeImageAvgAggregateOutputType | null
-  _sum: RecipeImageSumAggregateOutputType | null
   _min: RecipeImageMinAggregateOutputType | null
   _max: RecipeImageMaxAggregateOutputType | null
 }
@@ -222,8 +184,8 @@ export type RecipeImageWhereInput = {
   AND?: Prisma.RecipeImageWhereInput | Prisma.RecipeImageWhereInput[]
   OR?: Prisma.RecipeImageWhereInput[]
   NOT?: Prisma.RecipeImageWhereInput | Prisma.RecipeImageWhereInput[]
-  id?: Prisma.IntFilter<"RecipeImage"> | number
-  recipeId?: Prisma.IntFilter<"RecipeImage"> | number
+  id?: Prisma.StringFilter<"RecipeImage"> | string
+  recipeId?: Prisma.StringFilter<"RecipeImage"> | string
   imageUrl?: Prisma.StringFilter<"RecipeImage"> | string
   publicId?: Prisma.StringFilter<"RecipeImage"> | string
   type?: Prisma.EnumRecipeImageTypeFilter<"RecipeImage"> | $Enums.RecipeImageType
@@ -242,11 +204,11 @@ export type RecipeImageOrderByWithRelationInput = {
 }
 
 export type RecipeImageWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
+  id?: string
   AND?: Prisma.RecipeImageWhereInput | Prisma.RecipeImageWhereInput[]
   OR?: Prisma.RecipeImageWhereInput[]
   NOT?: Prisma.RecipeImageWhereInput | Prisma.RecipeImageWhereInput[]
-  recipeId?: Prisma.IntFilter<"RecipeImage"> | number
+  recipeId?: Prisma.StringFilter<"RecipeImage"> | string
   imageUrl?: Prisma.StringFilter<"RecipeImage"> | string
   publicId?: Prisma.StringFilter<"RecipeImage"> | string
   type?: Prisma.EnumRecipeImageTypeFilter<"RecipeImage"> | $Enums.RecipeImageType
@@ -262,18 +224,16 @@ export type RecipeImageOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.RecipeImageCountOrderByAggregateInput
-  _avg?: Prisma.RecipeImageAvgOrderByAggregateInput
   _max?: Prisma.RecipeImageMaxOrderByAggregateInput
   _min?: Prisma.RecipeImageMinOrderByAggregateInput
-  _sum?: Prisma.RecipeImageSumOrderByAggregateInput
 }
 
 export type RecipeImageScalarWhereWithAggregatesInput = {
   AND?: Prisma.RecipeImageScalarWhereWithAggregatesInput | Prisma.RecipeImageScalarWhereWithAggregatesInput[]
   OR?: Prisma.RecipeImageScalarWhereWithAggregatesInput[]
   NOT?: Prisma.RecipeImageScalarWhereWithAggregatesInput | Prisma.RecipeImageScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"RecipeImage"> | number
-  recipeId?: Prisma.IntWithAggregatesFilter<"RecipeImage"> | number
+  id?: Prisma.StringWithAggregatesFilter<"RecipeImage"> | string
+  recipeId?: Prisma.StringWithAggregatesFilter<"RecipeImage"> | string
   imageUrl?: Prisma.StringWithAggregatesFilter<"RecipeImage"> | string
   publicId?: Prisma.StringWithAggregatesFilter<"RecipeImage"> | string
   type?: Prisma.EnumRecipeImageTypeWithAggregatesFilter<"RecipeImage"> | $Enums.RecipeImageType
@@ -281,6 +241,7 @@ export type RecipeImageScalarWhereWithAggregatesInput = {
 }
 
 export type RecipeImageCreateInput = {
+  id?: string
   imageUrl: string
   publicId: string
   type: $Enums.RecipeImageType
@@ -289,8 +250,8 @@ export type RecipeImageCreateInput = {
 }
 
 export type RecipeImageUncheckedCreateInput = {
-  id?: number
-  recipeId: number
+  id?: string
+  recipeId: string
   imageUrl: string
   publicId: string
   type: $Enums.RecipeImageType
@@ -298,6 +259,7 @@ export type RecipeImageUncheckedCreateInput = {
 }
 
 export type RecipeImageUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumRecipeImageTypeFieldUpdateOperationsInput | $Enums.RecipeImageType
@@ -306,8 +268,8 @@ export type RecipeImageUpdateInput = {
 }
 
 export type RecipeImageUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  recipeId?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recipeId?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumRecipeImageTypeFieldUpdateOperationsInput | $Enums.RecipeImageType
@@ -315,8 +277,8 @@ export type RecipeImageUncheckedUpdateInput = {
 }
 
 export type RecipeImageCreateManyInput = {
-  id?: number
-  recipeId: number
+  id?: string
+  recipeId: string
   imageUrl: string
   publicId: string
   type: $Enums.RecipeImageType
@@ -324,6 +286,7 @@ export type RecipeImageCreateManyInput = {
 }
 
 export type RecipeImageUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumRecipeImageTypeFieldUpdateOperationsInput | $Enums.RecipeImageType
@@ -331,8 +294,8 @@ export type RecipeImageUpdateManyMutationInput = {
 }
 
 export type RecipeImageUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  recipeId?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  recipeId?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumRecipeImageTypeFieldUpdateOperationsInput | $Enums.RecipeImageType
@@ -358,11 +321,6 @@ export type RecipeImageCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type RecipeImageAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  recipeId?: Prisma.SortOrder
-}
-
 export type RecipeImageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   recipeId?: Prisma.SortOrder
@@ -379,11 +337,6 @@ export type RecipeImageMinOrderByAggregateInput = {
   publicId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-}
-
-export type RecipeImageSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  recipeId?: Prisma.SortOrder
 }
 
 export type RecipeImageCreateNestedManyWithoutRecipeInput = {
@@ -433,6 +386,7 @@ export type EnumRecipeImageTypeFieldUpdateOperationsInput = {
 }
 
 export type RecipeImageCreateWithoutRecipeInput = {
+  id?: string
   imageUrl: string
   publicId: string
   type: $Enums.RecipeImageType
@@ -440,7 +394,7 @@ export type RecipeImageCreateWithoutRecipeInput = {
 }
 
 export type RecipeImageUncheckedCreateWithoutRecipeInput = {
-  id?: number
+  id?: string
   imageUrl: string
   publicId: string
   type: $Enums.RecipeImageType
@@ -477,8 +431,8 @@ export type RecipeImageScalarWhereInput = {
   AND?: Prisma.RecipeImageScalarWhereInput | Prisma.RecipeImageScalarWhereInput[]
   OR?: Prisma.RecipeImageScalarWhereInput[]
   NOT?: Prisma.RecipeImageScalarWhereInput | Prisma.RecipeImageScalarWhereInput[]
-  id?: Prisma.IntFilter<"RecipeImage"> | number
-  recipeId?: Prisma.IntFilter<"RecipeImage"> | number
+  id?: Prisma.StringFilter<"RecipeImage"> | string
+  recipeId?: Prisma.StringFilter<"RecipeImage"> | string
   imageUrl?: Prisma.StringFilter<"RecipeImage"> | string
   publicId?: Prisma.StringFilter<"RecipeImage"> | string
   type?: Prisma.EnumRecipeImageTypeFilter<"RecipeImage"> | $Enums.RecipeImageType
@@ -486,7 +440,7 @@ export type RecipeImageScalarWhereInput = {
 }
 
 export type RecipeImageCreateManyRecipeInput = {
-  id?: number
+  id?: string
   imageUrl: string
   publicId: string
   type: $Enums.RecipeImageType
@@ -494,6 +448,7 @@ export type RecipeImageCreateManyRecipeInput = {
 }
 
 export type RecipeImageUpdateWithoutRecipeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumRecipeImageTypeFieldUpdateOperationsInput | $Enums.RecipeImageType
@@ -501,7 +456,7 @@ export type RecipeImageUpdateWithoutRecipeInput = {
 }
 
 export type RecipeImageUncheckedUpdateWithoutRecipeInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumRecipeImageTypeFieldUpdateOperationsInput | $Enums.RecipeImageType
@@ -509,7 +464,7 @@ export type RecipeImageUncheckedUpdateWithoutRecipeInput = {
 }
 
 export type RecipeImageUncheckedUpdateManyWithoutRecipeInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   publicId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumRecipeImageTypeFieldUpdateOperationsInput | $Enums.RecipeImageType
@@ -574,8 +529,8 @@ export type $RecipeImagePayload<ExtArgs extends runtime.Types.Extensions.Interna
     recipe: Prisma.$RecipePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
-    recipeId: number
+    id: string
+    recipeId: string
     imageUrl: string
     publicId: string
     type: $Enums.RecipeImageType
@@ -1004,8 +959,8 @@ export interface Prisma__RecipeImageClient<T, Null = never, ExtArgs extends runt
  * Fields of the RecipeImage model
  */
 export interface RecipeImageFieldRefs {
-  readonly id: Prisma.FieldRef<"RecipeImage", 'Int'>
-  readonly recipeId: Prisma.FieldRef<"RecipeImage", 'Int'>
+  readonly id: Prisma.FieldRef<"RecipeImage", 'String'>
+  readonly recipeId: Prisma.FieldRef<"RecipeImage", 'String'>
   readonly imageUrl: Prisma.FieldRef<"RecipeImage", 'String'>
   readonly publicId: Prisma.FieldRef<"RecipeImage", 'String'>
   readonly type: Prisma.FieldRef<"RecipeImage", 'RecipeImageType'>

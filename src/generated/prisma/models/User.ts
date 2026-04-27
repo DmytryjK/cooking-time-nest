@@ -20,36 +20,26 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
-  _avg: UserAvgAggregateOutputType | null
-  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
 
-export type UserAvgAggregateOutputType = {
-  id: number | null
-  favoriteRecipeIds: number | null
-}
-
-export type UserSumAggregateOutputType = {
-  id: number | null
-  favoriteRecipeIds: number[]
-}
-
 export type UserMinAggregateOutputType = {
-  id: number | null
+  id: string | null
   email: string | null
   password: string | null
   name: string | null
+  role: $Enums.UserRole | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
-  id: number | null
+  id: string | null
   email: string | null
   password: string | null
   name: string | null
+  role: $Enums.UserRole | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,28 +49,19 @@ export type UserCountAggregateOutputType = {
   email: number
   password: number
   name: number
-  favoriteRecipeIds: number
+  role: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
 
-export type UserAvgAggregateInputType = {
-  id?: true
-  favoriteRecipeIds?: true
-}
-
-export type UserSumAggregateInputType = {
-  id?: true
-  favoriteRecipeIds?: true
-}
-
 export type UserMinAggregateInputType = {
   id?: true
   email?: true
   password?: true
   name?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -90,6 +71,7 @@ export type UserMaxAggregateInputType = {
   email?: true
   password?: true
   name?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -99,7 +81,7 @@ export type UserCountAggregateInputType = {
   email?: true
   password?: true
   name?: true
-  favoriteRecipeIds?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -143,18 +125,6 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: UserAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: UserSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -185,23 +155,19 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
-  _avg?: UserAvgAggregateInputType
-  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
 
 export type UserGroupByOutputType = {
-  id: number
+  id: string
   email: string
   password: string
   name: string | null
-  favoriteRecipeIds: number[]
+  role: $Enums.UserRole
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
-  _avg: UserAvgAggregateOutputType | null
-  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -225,14 +191,17 @@ export type UserWhereInput = {
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  id?: Prisma.IntFilter<"User"> | number
+  id?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  favoriteRecipeIds?: Prisma.IntNullableListFilter<"User">
+  role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   recipes?: Prisma.RecipeListRelationFilter
+  refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  favoriteRecipes?: Prisma.FavoriteRecipeListRelationFilter
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -240,24 +209,30 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  favoriteRecipeIds?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   recipes?: Prisma.RecipeOrderByRelationAggregateInput
+  refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
+  favoriteRecipes?: Prisma.FavoriteRecipeOrderByRelationAggregateInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
+  id?: string
   email?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   password?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  favoriteRecipeIds?: Prisma.IntNullableListFilter<"User">
+  role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   recipes?: Prisma.RecipeListRelationFilter
+  refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  favoriteRecipes?: Prisma.FavoriteRecipeListRelationFilter
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -265,106 +240,111 @@ export type UserOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  favoriteRecipeIds?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
-  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
-  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
   AND?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"User"> | number
+  id?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  favoriteRecipeIds?: Prisma.IntNullableListFilter<"User">
+  role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
 export type UserCreateInput = {
+  id?: string
   email: string
   password: string
   name?: string | null
-  favoriteRecipeIds?: Prisma.UserCreatefavoriteRecipeIdsInput | number[]
+  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
-  id?: number
+  id?: string
   email: string
   password: string
   name?: string | null
-  favoriteRecipeIds?: Prisma.UserCreatefavoriteRecipeIdsInput | number[]
+  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  favoriteRecipeIds?: Prisma.UserUpdatefavoriteRecipeIdsInput | number[]
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  favoriteRecipeIds?: Prisma.UserUpdatefavoriteRecipeIdsInput | number[]
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
-  id?: number
+  id?: string
   email: string
   password: string
   name?: string | null
-  favoriteRecipeIds?: Prisma.UserCreatefavoriteRecipeIdsInput | number[]
+  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type UserUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  favoriteRecipeIds?: Prisma.UserUpdatefavoriteRecipeIdsInput | number[]
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  favoriteRecipeIds?: Prisma.UserUpdatefavoriteRecipeIdsInput | number[]
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type IntNullableListFilter<$PrismaModel = never> = {
-  equals?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
-  has?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
-  hasEvery?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
-  hasSome?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -372,14 +352,9 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  favoriteRecipeIds?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type UserAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  favoriteRecipeIds?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -387,6 +362,7 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -396,13 +372,9 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type UserSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  favoriteRecipeIds?: Prisma.SortOrder
 }
 
 export type UserNullableScalarRelationFilter = {
@@ -410,8 +382,9 @@ export type UserNullableScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput | null
 }
 
-export type UserCreatefavoriteRecipeIdsInput = {
-  set: number[]
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -422,21 +395,12 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type UserUpdatefavoriteRecipeIdsInput = {
-  set?: number[]
-  push?: number | number[]
+export type EnumUserRoleFieldUpdateOperationsInput = {
+  set?: $Enums.UserRole
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type UserCreateNestedOneWithoutRecipesInput = {
@@ -455,23 +419,72 @@ export type UserUpdateOneWithoutRecipesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecipesInput, Prisma.UserUpdateWithoutRecipesInput>, Prisma.UserUncheckedUpdateWithoutRecipesInput>
 }
 
+export type UserCreateNestedOneWithoutFavoriteRecipesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoriteRecipesInput, Prisma.UserUncheckedCreateWithoutFavoriteRecipesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoriteRecipesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFavoriteRecipesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoriteRecipesInput, Prisma.UserUncheckedCreateWithoutFavoriteRecipesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoriteRecipesInput
+  upsert?: Prisma.UserUpsertWithoutFavoriteRecipesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFavoriteRecipesInput, Prisma.UserUpdateWithoutFavoriteRecipesInput>, Prisma.UserUncheckedUpdateWithoutFavoriteRecipesInput>
+}
+
+export type UserCreateNestedOneWithoutRecentlyViewedRecipesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedRecipesInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedRecipesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecentlyViewedRecipesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRecentlyViewedRecipesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedRecipesInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedRecipesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecentlyViewedRecipesInput
+  upsert?: Prisma.UserUpsertWithoutRecentlyViewedRecipesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecentlyViewedRecipesInput, Prisma.UserUpdateWithoutRecentlyViewedRecipesInput>, Prisma.UserUncheckedUpdateWithoutRecentlyViewedRecipesInput>
+}
+
+export type UserCreateNestedOneWithoutRefreshTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+  upsert?: Prisma.UserUpsertWithoutRefreshTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.UserUpdateWithoutRefreshTokensInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+}
+
 export type UserCreateWithoutRecipesInput = {
+  id?: string
   email: string
   password: string
   name?: string | null
-  favoriteRecipeIds?: Prisma.UserCreatefavoriteRecipeIdsInput | number[]
+  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRecipesInput = {
-  id?: number
+  id?: string
   email: string
   password: string
   name?: string | null
-  favoriteRecipeIds?: Prisma.UserCreatefavoriteRecipeIdsInput | number[]
+  role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRecipesInput = {
@@ -491,22 +504,233 @@ export type UserUpdateToOneWithWhereWithoutRecipesInput = {
 }
 
 export type UserUpdateWithoutRecipesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  favoriteRecipeIds?: Prisma.UserUpdatefavoriteRecipeIdsInput | number[]
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecipesInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  favoriteRecipeIds?: Prisma.UserUpdatefavoriteRecipeIdsInput | number[]
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFavoriteRecipesInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFavoriteRecipesInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFavoriteRecipesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoriteRecipesInput, Prisma.UserUncheckedCreateWithoutFavoriteRecipesInput>
+}
+
+export type UserUpsertWithoutFavoriteRecipesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFavoriteRecipesInput, Prisma.UserUncheckedUpdateWithoutFavoriteRecipesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoriteRecipesInput, Prisma.UserUncheckedCreateWithoutFavoriteRecipesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFavoriteRecipesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFavoriteRecipesInput, Prisma.UserUncheckedUpdateWithoutFavoriteRecipesInput>
+}
+
+export type UserUpdateWithoutFavoriteRecipesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFavoriteRecipesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRecentlyViewedRecipesInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRecentlyViewedRecipesInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRecentlyViewedRecipesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedRecipesInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedRecipesInput>
+}
+
+export type UserUpsertWithoutRecentlyViewedRecipesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRecentlyViewedRecipesInput, Prisma.UserUncheckedUpdateWithoutRecentlyViewedRecipesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecentlyViewedRecipesInput, Prisma.UserUncheckedCreateWithoutRecentlyViewedRecipesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRecentlyViewedRecipesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRecentlyViewedRecipesInput, Prisma.UserUncheckedUpdateWithoutRecentlyViewedRecipesInput>
+}
+
+export type UserUpdateWithoutRecentlyViewedRecipesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRecentlyViewedRecipesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutRefreshTokensInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRefreshTokensInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRefreshTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+}
+
+export type UserUpsertWithoutRefreshTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+}
+
+export type UserUpdateWithoutRefreshTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRefreshTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -516,10 +740,16 @@ export type UserUncheckedUpdateWithoutRecipesInput = {
 
 export type UserCountOutputType = {
   recipes: number
+  refreshTokens: number
+  favoriteRecipes: number
+  recentlyViewedRecipes: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recipes?: boolean | UserCountOutputTypeCountRecipesArgs
+  refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
+  favoriteRecipes?: boolean | UserCountOutputTypeCountFavoriteRecipesArgs
+  recentlyViewedRecipes?: boolean | UserCountOutputTypeCountRecentlyViewedRecipesArgs
 }
 
 /**
@@ -539,16 +769,40 @@ export type UserCountOutputTypeCountRecipesArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.RecipeWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefreshTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFavoriteRecipesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoriteRecipeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRecentlyViewedRecipesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecentlyViewedRecipeWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   password?: boolean
   name?: boolean
-  favoriteRecipeIds?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   recipes?: boolean | Prisma.User$recipesArgs<ExtArgs>
+  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
+  favoriteRecipes?: boolean | Prisma.User$favoriteRecipesArgs<ExtArgs>
+  recentlyViewedRecipes?: boolean | Prisma.User$recentlyViewedRecipesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -557,7 +811,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   password?: boolean
   name?: boolean
-  favoriteRecipeIds?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -567,7 +821,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   password?: boolean
   name?: boolean
-  favoriteRecipeIds?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -577,14 +831,17 @@ export type UserSelectScalar = {
   email?: boolean
   password?: boolean
   name?: boolean
-  favoriteRecipeIds?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "favoriteRecipeIds" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recipes?: boolean | Prisma.User$recipesArgs<ExtArgs>
+  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
+  favoriteRecipes?: boolean | Prisma.User$favoriteRecipesArgs<ExtArgs>
+  recentlyViewedRecipes?: boolean | Prisma.User$recentlyViewedRecipesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -594,13 +851,16 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     recipes: Prisma.$RecipePayload<ExtArgs>[]
+    refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+    favoriteRecipes: Prisma.$FavoriteRecipePayload<ExtArgs>[]
+    recentlyViewedRecipes: Prisma.$RecentlyViewedRecipePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
+    id: string
     email: string
     password: string
     name: string | null
-    favoriteRecipeIds: number[]
+    role: $Enums.UserRole
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -998,6 +1258,9 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   recipes<T extends Prisma.User$recipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoriteRecipes<T extends Prisma.User$favoriteRecipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteRecipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recentlyViewedRecipes<T extends Prisma.User$recentlyViewedRecipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recentlyViewedRecipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecentlyViewedRecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1027,11 +1290,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  * Fields of the User model
  */
 export interface UserFieldRefs {
-  readonly id: Prisma.FieldRef<"User", 'Int'>
+  readonly id: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
-  readonly favoriteRecipeIds: Prisma.FieldRef<"User", 'Int[]'>
+  readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1443,6 +1706,78 @@ export type User$recipesArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.RecipeScalarFieldEnum | Prisma.RecipeScalarFieldEnum[]
+}
+
+/**
+ * User.refreshTokens
+ */
+export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RefreshToken
+   */
+  select?: Prisma.RefreshTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RefreshToken
+   */
+  omit?: Prisma.RefreshTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefreshTokenInclude<ExtArgs> | null
+  where?: Prisma.RefreshTokenWhereInput
+  orderBy?: Prisma.RefreshTokenOrderByWithRelationInput | Prisma.RefreshTokenOrderByWithRelationInput[]
+  cursor?: Prisma.RefreshTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
+}
+
+/**
+ * User.favoriteRecipes
+ */
+export type User$favoriteRecipesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FavoriteRecipe
+   */
+  select?: Prisma.FavoriteRecipeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FavoriteRecipe
+   */
+  omit?: Prisma.FavoriteRecipeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoriteRecipeInclude<ExtArgs> | null
+  where?: Prisma.FavoriteRecipeWhereInput
+  orderBy?: Prisma.FavoriteRecipeOrderByWithRelationInput | Prisma.FavoriteRecipeOrderByWithRelationInput[]
+  cursor?: Prisma.FavoriteRecipeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoriteRecipeScalarFieldEnum | Prisma.FavoriteRecipeScalarFieldEnum[]
+}
+
+/**
+ * User.recentlyViewedRecipes
+ */
+export type User$recentlyViewedRecipesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecentlyViewedRecipe
+   */
+  select?: Prisma.RecentlyViewedRecipeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecentlyViewedRecipe
+   */
+  omit?: Prisma.RecentlyViewedRecipeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecentlyViewedRecipeInclude<ExtArgs> | null
+  where?: Prisma.RecentlyViewedRecipeWhereInput
+  orderBy?: Prisma.RecentlyViewedRecipeOrderByWithRelationInput | Prisma.RecentlyViewedRecipeOrderByWithRelationInput[]
+  cursor?: Prisma.RecentlyViewedRecipeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecentlyViewedRecipeScalarFieldEnum | Prisma.RecentlyViewedRecipeScalarFieldEnum[]
 }
 
 /**

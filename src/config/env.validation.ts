@@ -35,11 +35,19 @@ class EnvironmentVariables {
 
   @IsString()
   @IsNotEmpty()
-  JWT_SECRET: string;
+  JWT_ACCESS_SECRET: string;
 
   @IsString()
   @IsOptional()
-  JWT_EXPIRES_IN?: string = '7d';
+  JWT_ACCESS_EXPIRES_IN?: string = '15m';
+
+  @IsString()
+  @IsNotEmpty()
+  JWT_REFRESH_SECRET: string;
+
+  @IsString()
+  @IsOptional()
+  JWT_REFRESH_EXPIRES_IN?: string = '7d';
 
   @IsInt()
   @Min(1)

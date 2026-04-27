@@ -7,6 +7,7 @@ import { UsersModule } from './modules/users/users.module';
 import { RecipesModule } from './modules/recipes/recipes.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { validate } from './config';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { validate } from './config';
     AuthModule,
     UsersModule,
     RecipesModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}

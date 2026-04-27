@@ -1,7 +1,7 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "../src/generated/prisma"
-  moduleFormat    = "cjs"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
@@ -13,35 +13,49 @@ enum RecipeImageType {
   PREVIEW
 }
 
+enum UserRole {
+  user
+  admin
+}
+
 model User {
-  id                   Int      @default(autoincrement()) @id
-  email                String   @unique
-  password             String
-  name                 String?
-  recipes              Recipe[]
-  favoriteRecipeIds    Int[]    @default([])
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  id                      String                 @id @default(uuid())
+  email                   String                 @unique
+  password                String
+  name                    String?
+  recipes                 Recipe[]
+  refreshTokens           RefreshToken[]
+  role                    UserRole               @default(user)
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  favoriteRecipes         FavoriteRecipe[]
+  recentlyViewedRecipes   RecentlyViewedRecipe[]
 }
 
 model Recipe {
-  id          Int                @default(autoincrement()) @id
-  title       String
-  description String?
-  ingredients RecipeIngredient[]
-  userId      Int?
-  user        User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  images      RecipeImage[]
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  id                    String                 @id @default(uuid())
+  title                 String
+  description           String?
+  ingredients           RecipeIngredient[]
+  userId                String?
+  user                  User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  images                RecipeImage[]
+  cookingTimeInMinutes  Int                    @default(0)
+  categoryId            String
+  category              Category               @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  favoriteRecipes       FavoriteRecipe[]
+  recentlyViewedRecipes RecentlyViewedRecipe[]
 
   @@index([createdAt])
   @@index([title])
+  @@index([categoryId])
 }
 
 model RecipeIngredient {
-  id       Int    @default(autoincrement()) @id
-  recipeId Int
+  id       String @id @default(uuid())
+  recipeId String
   recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   name     String
   amount   Float
@@ -52,11 +66,48 @@ model RecipeIngredient {
 }
 
 model RecipeImage {
-  id        Int               @default(autoincrement()) @id
-  recipeId  Int
-  recipe    Recipe            @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  id        String          @id @default(uuid())
+  recipeId  String
+  recipe    Recipe          @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   imageUrl  String
   publicId  String
   type      RecipeImageType
-  createdAt DateTime          @default(now())
+  createdAt DateTime        @default(now())
+}
+
+model FavoriteRecipe {
+  recipeId String
+  userId   String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, recipeId])
+}
+
+model RecentlyViewedRecipe {
+  recipeId String
+  userId   String
+  viewedAt DateTime @default(now())
+  recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, recipeId])
+}
+
+model Category {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  recipes Recipe[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isUsed    Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }

@@ -15,3 +15,11 @@ export const RecipeImageType = {
 } as const
 
 export type RecipeImageType = (typeof RecipeImageType)[keyof typeof RecipeImageType]
+
+
+export const UserRole = {
+  user: 'user',
+  admin: 'admin'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]

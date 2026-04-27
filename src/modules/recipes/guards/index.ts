@@ -1,1 +1,1 @@
-export * from './recipe-ownership.guard';
+export * from './recipe-access.guard';

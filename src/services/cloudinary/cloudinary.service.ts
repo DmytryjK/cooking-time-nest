@@ -18,8 +18,8 @@ export class CloudinaryService {
     cld.config(config);
   }
 
-  async uploadImage(file: Express.Multer.File): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
+  async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse> {
+    return new Promise<UploadApiResponse>((resolve, reject) => {
       const upload = cld.uploader.upload_stream(
         {
           folder: CLOUDINARY_CONSTANTS.UPLOAD_FOLDER,
@@ -32,8 +32,8 @@ export class CloudinaryService {
                 ? String(error.message)
                 : 'Upload failed';
             reject(new Error(errorMessage));
-          } else if (result?.secure_url) {
-            resolve(result.secure_url);
+          } else if (result) {
+            resolve(result);
           } else {
             reject(new Error('Upload failed: no result returned'));
           }

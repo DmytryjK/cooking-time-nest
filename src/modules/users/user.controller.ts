@@ -1,4 +1,11 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  SerializeOptions,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -9,7 +16,7 @@ import { UsersService } from './user.service';
 import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
 import { CurrentUser } from '@/modules/auth/decorators';
 import { type User as UserModel } from '@/generated/prisma/client';
-import { UserResponseDto } from './dto';
+import { UserResponseDto, ToggleFavoriteDto } from './dto';
 import { UnauthorizedResponseDto } from '@/common/dto';
 
 @ApiTags('Users')
@@ -20,6 +27,7 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get('me')
+  @SerializeOptions({ type: UserResponseDto })
   @ApiOperation({
     summary: 'Get current user information',
     description: 'Retrieve authenticated user information (excluding password)',
@@ -36,5 +44,29 @@ export class UsersController {
   })
   getMe(@CurrentUser() user: UserModel): Omit<UserModel, 'password'> {
     return user;
+  }
+
+  @Patch('favorites')
+  @ApiOperation({
+    summary: 'Toggle recipe favorite',
+    description:
+      "Add or remove a recipe from the current user's favorites list",
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Favorites updated',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+    type: UnauthorizedResponseDto,
+  })
+  async toggleFavorite(
+    @CurrentUser() user: UserModel,
+    @Body() dto: ToggleFavoriteDto,
+  ) {
+    const recipe = await this.userService.toggleFavorite(user.id, dto.recipeId);
+    return recipe;
   }
 }
