@@ -146,4 +146,21 @@ export class AuthService {
 
     return this.issueToken(user, res);
   }
+
+  async googleLogin(
+    googleUser: { email: string; name: string },
+    res: Response,
+  ) {
+    let user = await this.usersService.user({ email: googleUser.email });
+
+    if (!user) {
+      user = await this.usersService.createUser({
+        email: googleUser.email,
+        name: googleUser.name,
+        password: '',
+      });
+    }
+
+    return this.issueToken(user, res);
+  }
 }

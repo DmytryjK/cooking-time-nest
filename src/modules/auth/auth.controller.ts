@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignupDto, LoginDto, AuthResponseDto } from './dto';
@@ -11,6 +19,8 @@ import { CurrentUser } from './decorators';
 import { JwtAuthGuard } from './guards';
 import { type UserModel } from '@/generated/prisma/models';
 import { type Response, type Request } from 'express';
+import { GoogleAuthGuard } from './guards/google-auth.guard';
+import { config } from '@/config/config';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -103,5 +113,19 @@ export class AuthController {
   })
   refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.authService.refresh(req, res);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  googleAuth() {}
+
+  @Get('google/callback')
+  @UseGuards(GoogleAuthGuard)
+  async googleCallback(
+    @Req() req: Request & { user: { email: string; name: string } },
+    @Res() res: Response,
+  ) {
+    await this.authService.googleLogin(req.user, res);
+    res.redirect(config.googleRedirectUrl!);
   }
 }
