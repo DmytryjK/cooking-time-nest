@@ -8,7 +8,7 @@ export class IngredientDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Ingredient name is required' })
-  name: string;
+  name!: string;
 
   @ApiProperty({
     description: 'Ingredient amount',
@@ -17,7 +17,7 @@ export class IngredientDto {
   })
   @IsNumber()
   @Min(0, { message: 'Amount must be a positive number' })
-  amount: number;
+  amount!: string;
 
   @ApiProperty({
     description: 'Unit of measurement',
@@ -25,5 +25,5 @@ export class IngredientDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Unit is required' })
-  unit: string;
+  unit!: string;
 }

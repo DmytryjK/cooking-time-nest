@@ -52,8 +52,8 @@ export class CreateRecipeDto {
     type: 'array',
     items: { $ref: getSchemaPath(IngredientDto) },
     example: [
-      { name: 'Flour', amount: 500, unit: 'g' },
-      { name: 'Water', amount: 300, unit: 'ml' },
+      { name: 'Flour', amount: '500', unit: 'g' },
+      { name: 'Water', amount: '300', unit: 'ml' },
     ],
   })
   @Transform(({ value }) => {

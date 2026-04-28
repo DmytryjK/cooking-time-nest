@@ -58,7 +58,7 @@ model RecipeIngredient {
   recipeId String
   recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   name     String
-  amount   Float
+  amount   String
   unit     String
 
   @@index([recipeId])
