@@ -15,7 +15,6 @@ export class IngredientDto {
     example: '0.5',
   })
   @IsString()
-  @IsNotEmpty({ message: 'Amount is required' })
   amount!: string;
 
   @ApiProperty({
