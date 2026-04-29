@@ -160,7 +160,7 @@ export class AuthService {
         password: '',
       });
     }
-
+    console.log(user, 'user');
     return this.issueToken(user, res);
   }
 }

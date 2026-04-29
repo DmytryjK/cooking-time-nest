@@ -126,6 +126,7 @@ export class AuthController {
     @Res() res: Response,
   ) {
     await this.authService.googleLogin(req.user, res);
+    console.log(config.googleRedirectUrl, 'config.googleRedirectUrl');
     res.redirect(config.googleRedirectUrl!);
   }
 }
