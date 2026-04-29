@@ -68,6 +68,11 @@ export type FavoriteRecipe = Prisma.FavoriteRecipeModel
  */
 export type RecentlyViewedRecipe = Prisma.RecentlyViewedRecipeModel
 /**
+ * Model RecipeRating
+ * 
+ */
+export type RecipeRating = Prisma.RecipeRatingModel
+/**
  * Model Category
  * 
  */

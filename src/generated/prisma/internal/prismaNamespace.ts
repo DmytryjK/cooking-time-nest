@@ -390,6 +390,7 @@ export const ModelName = {
   RecipeImage: 'RecipeImage',
   FavoriteRecipe: 'FavoriteRecipe',
   RecentlyViewedRecipe: 'RecentlyViewedRecipe',
+  RecipeRating: 'RecipeRating',
   Category: 'Category',
   RefreshToken: 'RefreshToken'
 } as const
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "recipe" | "recipeIngredient" | "recipeImage" | "favoriteRecipe" | "recentlyViewedRecipe" | "category" | "refreshToken"
+    modelProps: "user" | "recipe" | "recipeIngredient" | "recipeImage" | "favoriteRecipe" | "recentlyViewedRecipe" | "recipeRating" | "category" | "refreshToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -855,6 +856,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RecipeRating: {
+      payload: Prisma.$RecipeRatingPayload<ExtArgs>
+      fields: Prisma.RecipeRatingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RecipeRatingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RecipeRatingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>
+        }
+        findFirst: {
+          args: Prisma.RecipeRatingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RecipeRatingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>
+        }
+        findMany: {
+          args: Prisma.RecipeRatingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>[]
+        }
+        create: {
+          args: Prisma.RecipeRatingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>
+        }
+        createMany: {
+          args: Prisma.RecipeRatingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RecipeRatingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>[]
+        }
+        delete: {
+          args: Prisma.RecipeRatingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>
+        }
+        update: {
+          args: Prisma.RecipeRatingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>
+        }
+        deleteMany: {
+          args: Prisma.RecipeRatingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RecipeRatingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RecipeRatingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>[]
+        }
+        upsert: {
+          args: Prisma.RecipeRatingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecipeRatingPayload>
+        }
+        aggregate: {
+          args: Prisma.RecipeRatingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRecipeRating>
+        }
+        groupBy: {
+          args: Prisma.RecipeRatingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RecipeRatingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RecipeRatingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RecipeRatingCountAggregateOutputType> | number
+        }
+      }
+    }
     Category: {
       payload: Prisma.$CategoryPayload<ExtArgs>
       fields: Prisma.CategoryFieldRefs
@@ -1061,6 +1136,8 @@ export const RecipeScalarFieldEnum = {
   description: 'description',
   userId: 'userId',
   cookingTimeInMinutes: 'cookingTimeInMinutes',
+  avgRating: 'avgRating',
+  ratingsCount: 'ratingsCount',
   categoryId: 'categoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1107,6 +1184,15 @@ export const RecentlyViewedRecipeScalarFieldEnum = {
 } as const
 
 export type RecentlyViewedRecipeScalarFieldEnum = (typeof RecentlyViewedRecipeScalarFieldEnum)[keyof typeof RecentlyViewedRecipeScalarFieldEnum]
+
+
+export const RecipeRatingScalarFieldEnum = {
+  recipeId: 'recipeId',
+  userId: 'userId',
+  rating: 'rating'
+} as const
+
+export type RecipeRatingScalarFieldEnum = (typeof RecipeRatingScalarFieldEnum)[keyof typeof RecipeRatingScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {
@@ -1216,6 +1302,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'RecipeImageType'
  */
 export type EnumRecipeImageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipeImageType'>
@@ -1233,20 +1333,6 @@ export type ListEnumRecipeImageTypeFieldRefInput<$PrismaModel> = FieldRefInputTy
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1350,6 +1436,7 @@ export type GlobalOmitConfig = {
   recipeImage?: Prisma.RecipeImageOmit
   favoriteRecipe?: Prisma.FavoriteRecipeOmit
   recentlyViewedRecipe?: Prisma.RecentlyViewedRecipeOmit
+  recipeRating?: Prisma.RecipeRatingOmit
   category?: Prisma.CategoryOmit
   refreshToken?: Prisma.RefreshTokenOmit
 }

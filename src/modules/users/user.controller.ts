@@ -27,6 +27,7 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get('me')
+  @UseGuards(JwtAuthGuard)
   @SerializeOptions({ type: UserResponseDto })
   @ApiOperation({
     summary: 'Get current user information',

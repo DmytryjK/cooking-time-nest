@@ -121,7 +121,14 @@ export class RecipesService {
       );
     }
 
-    return recipe;
+    const userRating =
+      user &&
+      (await this.prisma.recipeRating.findUnique({
+        where: { userId_recipeId: { userId: user.id, recipeId: recipe.id } },
+        select: { rating: true },
+      }));
+
+    return { ...recipe, userRating: userRating?.rating };
   }
 
   async recipes(
@@ -337,6 +344,10 @@ export class RecipesService {
       data,
       where: { id },
     });
+  }
+
+  setRating(userId: string, recipeId: string, rating: number) {
+    return this.recipeInteractionsFacade.setRating(userId, recipeId, rating);
   }
 
   async deleteRecipe(where: Prisma.RecipeWhereUniqueInput): Promise<Recipe> {

@@ -28,10 +28,14 @@ export type AggregateRecipe = {
 
 export type RecipeAvgAggregateOutputType = {
   cookingTimeInMinutes: number | null
+  avgRating: number | null
+  ratingsCount: number | null
 }
 
 export type RecipeSumAggregateOutputType = {
   cookingTimeInMinutes: number | null
+  avgRating: number | null
+  ratingsCount: number | null
 }
 
 export type RecipeMinAggregateOutputType = {
@@ -40,6 +44,8 @@ export type RecipeMinAggregateOutputType = {
   description: string | null
   userId: string | null
   cookingTimeInMinutes: number | null
+  avgRating: number | null
+  ratingsCount: number | null
   categoryId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -51,6 +57,8 @@ export type RecipeMaxAggregateOutputType = {
   description: string | null
   userId: string | null
   cookingTimeInMinutes: number | null
+  avgRating: number | null
+  ratingsCount: number | null
   categoryId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -62,6 +70,8 @@ export type RecipeCountAggregateOutputType = {
   description: number
   userId: number
   cookingTimeInMinutes: number
+  avgRating: number
+  ratingsCount: number
   categoryId: number
   createdAt: number
   updatedAt: number
@@ -71,10 +81,14 @@ export type RecipeCountAggregateOutputType = {
 
 export type RecipeAvgAggregateInputType = {
   cookingTimeInMinutes?: true
+  avgRating?: true
+  ratingsCount?: true
 }
 
 export type RecipeSumAggregateInputType = {
   cookingTimeInMinutes?: true
+  avgRating?: true
+  ratingsCount?: true
 }
 
 export type RecipeMinAggregateInputType = {
@@ -83,6 +97,8 @@ export type RecipeMinAggregateInputType = {
   description?: true
   userId?: true
   cookingTimeInMinutes?: true
+  avgRating?: true
+  ratingsCount?: true
   categoryId?: true
   createdAt?: true
   updatedAt?: true
@@ -94,6 +110,8 @@ export type RecipeMaxAggregateInputType = {
   description?: true
   userId?: true
   cookingTimeInMinutes?: true
+  avgRating?: true
+  ratingsCount?: true
   categoryId?: true
   createdAt?: true
   updatedAt?: true
@@ -105,6 +123,8 @@ export type RecipeCountAggregateInputType = {
   description?: true
   userId?: true
   cookingTimeInMinutes?: true
+  avgRating?: true
+  ratingsCount?: true
   categoryId?: true
   createdAt?: true
   updatedAt?: true
@@ -203,6 +223,8 @@ export type RecipeGroupByOutputType = {
   description: string | null
   userId: string | null
   cookingTimeInMinutes: number
+  avgRating: number
+  ratingsCount: number
   categoryId: string
   createdAt: Date
   updatedAt: Date
@@ -237,6 +259,8 @@ export type RecipeWhereInput = {
   description?: Prisma.StringNullableFilter<"Recipe"> | string | null
   userId?: Prisma.StringNullableFilter<"Recipe"> | string | null
   cookingTimeInMinutes?: Prisma.IntFilter<"Recipe"> | number
+  avgRating?: Prisma.FloatFilter<"Recipe"> | number
+  ratingsCount?: Prisma.IntFilter<"Recipe"> | number
   categoryId?: Prisma.StringFilter<"Recipe"> | string
   createdAt?: Prisma.DateTimeFilter<"Recipe"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Recipe"> | Date | string
@@ -246,6 +270,7 @@ export type RecipeWhereInput = {
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   favoriteRecipes?: Prisma.FavoriteRecipeListRelationFilter
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeListRelationFilter
+  ratings?: Prisma.RecipeRatingListRelationFilter
 }
 
 export type RecipeOrderByWithRelationInput = {
@@ -254,6 +279,8 @@ export type RecipeOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   cookingTimeInMinutes?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -263,6 +290,7 @@ export type RecipeOrderByWithRelationInput = {
   category?: Prisma.CategoryOrderByWithRelationInput
   favoriteRecipes?: Prisma.FavoriteRecipeOrderByRelationAggregateInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeOrderByRelationAggregateInput
+  ratings?: Prisma.RecipeRatingOrderByRelationAggregateInput
 }
 
 export type RecipeWhereUniqueInput = Prisma.AtLeast<{
@@ -274,6 +302,8 @@ export type RecipeWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Recipe"> | string | null
   userId?: Prisma.StringNullableFilter<"Recipe"> | string | null
   cookingTimeInMinutes?: Prisma.IntFilter<"Recipe"> | number
+  avgRating?: Prisma.FloatFilter<"Recipe"> | number
+  ratingsCount?: Prisma.IntFilter<"Recipe"> | number
   categoryId?: Prisma.StringFilter<"Recipe"> | string
   createdAt?: Prisma.DateTimeFilter<"Recipe"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Recipe"> | Date | string
@@ -283,6 +313,7 @@ export type RecipeWhereUniqueInput = Prisma.AtLeast<{
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   favoriteRecipes?: Prisma.FavoriteRecipeListRelationFilter
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeListRelationFilter
+  ratings?: Prisma.RecipeRatingListRelationFilter
 }, "id">
 
 export type RecipeOrderByWithAggregationInput = {
@@ -291,6 +322,8 @@ export type RecipeOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   cookingTimeInMinutes?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -310,6 +343,8 @@ export type RecipeScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Recipe"> | string | null
   userId?: Prisma.StringNullableWithAggregatesFilter<"Recipe"> | string | null
   cookingTimeInMinutes?: Prisma.IntWithAggregatesFilter<"Recipe"> | number
+  avgRating?: Prisma.FloatWithAggregatesFilter<"Recipe"> | number
+  ratingsCount?: Prisma.IntWithAggregatesFilter<"Recipe"> | number
   categoryId?: Prisma.StringWithAggregatesFilter<"Recipe"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Recipe"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Recipe"> | Date | string
@@ -320,6 +355,8 @@ export type RecipeCreateInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientCreateNestedManyWithoutRecipeInput
@@ -328,6 +365,7 @@ export type RecipeCreateInput = {
   category: Prisma.CategoryCreateNestedOneWithoutRecipesInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUncheckedCreateInput = {
@@ -336,6 +374,8 @@ export type RecipeUncheckedCreateInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -343,6 +383,7 @@ export type RecipeUncheckedCreateInput = {
   images?: Prisma.RecipeImageUncheckedCreateNestedManyWithoutRecipeInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUpdateInput = {
@@ -350,6 +391,8 @@ export type RecipeUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUpdateManyWithoutRecipeNestedInput
@@ -358,6 +401,7 @@ export type RecipeUpdateInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutRecipesNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateInput = {
@@ -366,6 +410,8 @@ export type RecipeUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -373,6 +419,7 @@ export type RecipeUncheckedUpdateInput = {
   images?: Prisma.RecipeImageUncheckedUpdateManyWithoutRecipeNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeCreateManyInput = {
@@ -381,6 +428,8 @@ export type RecipeCreateManyInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -391,6 +440,8 @@ export type RecipeUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -401,6 +452,8 @@ export type RecipeUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -422,6 +475,8 @@ export type RecipeCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   cookingTimeInMinutes?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -429,6 +484,8 @@ export type RecipeCountOrderByAggregateInput = {
 
 export type RecipeAvgOrderByAggregateInput = {
   cookingTimeInMinutes?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
 }
 
 export type RecipeMaxOrderByAggregateInput = {
@@ -437,6 +494,8 @@ export type RecipeMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   cookingTimeInMinutes?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -448,6 +507,8 @@ export type RecipeMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   cookingTimeInMinutes?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -455,6 +516,8 @@ export type RecipeMinOrderByAggregateInput = {
 
 export type RecipeSumOrderByAggregateInput = {
   cookingTimeInMinutes?: Prisma.SortOrder
+  avgRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
 }
 
 export type RecipeScalarRelationFilter = {
@@ -505,6 +568,14 @@ export type RecipeUncheckedUpdateManyWithoutUserNestedInput = {
 }
 
 export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
@@ -568,6 +639,20 @@ export type RecipeUpdateOneRequiredWithoutRecentlyViewedRecipesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RecipeUpdateToOneWithWhereWithoutRecentlyViewedRecipesInput, Prisma.RecipeUpdateWithoutRecentlyViewedRecipesInput>, Prisma.RecipeUncheckedUpdateWithoutRecentlyViewedRecipesInput>
 }
 
+export type RecipeCreateNestedOneWithoutRatingsInput = {
+  create?: Prisma.XOR<Prisma.RecipeCreateWithoutRatingsInput, Prisma.RecipeUncheckedCreateWithoutRatingsInput>
+  connectOrCreate?: Prisma.RecipeCreateOrConnectWithoutRatingsInput
+  connect?: Prisma.RecipeWhereUniqueInput
+}
+
+export type RecipeUpdateOneRequiredWithoutRatingsNestedInput = {
+  create?: Prisma.XOR<Prisma.RecipeCreateWithoutRatingsInput, Prisma.RecipeUncheckedCreateWithoutRatingsInput>
+  connectOrCreate?: Prisma.RecipeCreateOrConnectWithoutRatingsInput
+  upsert?: Prisma.RecipeUpsertWithoutRatingsInput
+  connect?: Prisma.RecipeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RecipeUpdateToOneWithWhereWithoutRatingsInput, Prisma.RecipeUpdateWithoutRatingsInput>, Prisma.RecipeUncheckedUpdateWithoutRatingsInput>
+}
+
 export type RecipeCreateNestedManyWithoutCategoryInput = {
   create?: Prisma.XOR<Prisma.RecipeCreateWithoutCategoryInput, Prisma.RecipeUncheckedCreateWithoutCategoryInput> | Prisma.RecipeCreateWithoutCategoryInput[] | Prisma.RecipeUncheckedCreateWithoutCategoryInput[]
   connectOrCreate?: Prisma.RecipeCreateOrConnectWithoutCategoryInput | Prisma.RecipeCreateOrConnectWithoutCategoryInput[]
@@ -615,6 +700,8 @@ export type RecipeCreateWithoutUserInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientCreateNestedManyWithoutRecipeInput
@@ -622,6 +709,7 @@ export type RecipeCreateWithoutUserInput = {
   category: Prisma.CategoryCreateNestedOneWithoutRecipesInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUncheckedCreateWithoutUserInput = {
@@ -629,6 +717,8 @@ export type RecipeUncheckedCreateWithoutUserInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -636,6 +726,7 @@ export type RecipeUncheckedCreateWithoutUserInput = {
   images?: Prisma.RecipeImageUncheckedCreateNestedManyWithoutRecipeInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeCreateOrConnectWithoutUserInput = {
@@ -673,6 +764,8 @@ export type RecipeScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Recipe"> | string | null
   userId?: Prisma.StringNullableFilter<"Recipe"> | string | null
   cookingTimeInMinutes?: Prisma.IntFilter<"Recipe"> | number
+  avgRating?: Prisma.FloatFilter<"Recipe"> | number
+  ratingsCount?: Prisma.IntFilter<"Recipe"> | number
   categoryId?: Prisma.StringFilter<"Recipe"> | string
   createdAt?: Prisma.DateTimeFilter<"Recipe"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Recipe"> | Date | string
@@ -683,6 +776,8 @@ export type RecipeCreateWithoutIngredientsInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutRecipesInput
@@ -690,6 +785,7 @@ export type RecipeCreateWithoutIngredientsInput = {
   category: Prisma.CategoryCreateNestedOneWithoutRecipesInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUncheckedCreateWithoutIngredientsInput = {
@@ -698,12 +794,15 @@ export type RecipeUncheckedCreateWithoutIngredientsInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   images?: Prisma.RecipeImageUncheckedCreateNestedManyWithoutRecipeInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeCreateOrConnectWithoutIngredientsInput = {
@@ -727,6 +826,8 @@ export type RecipeUpdateWithoutIngredientsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutRecipesNestedInput
@@ -734,6 +835,7 @@ export type RecipeUpdateWithoutIngredientsInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutRecipesNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateWithoutIngredientsInput = {
@@ -742,12 +844,15 @@ export type RecipeUncheckedUpdateWithoutIngredientsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.RecipeImageUncheckedUpdateManyWithoutRecipeNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeCreateWithoutImagesInput = {
@@ -755,6 +860,8 @@ export type RecipeCreateWithoutImagesInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientCreateNestedManyWithoutRecipeInput
@@ -762,6 +869,7 @@ export type RecipeCreateWithoutImagesInput = {
   category: Prisma.CategoryCreateNestedOneWithoutRecipesInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUncheckedCreateWithoutImagesInput = {
@@ -770,12 +878,15 @@ export type RecipeUncheckedCreateWithoutImagesInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeCreateOrConnectWithoutImagesInput = {
@@ -799,6 +910,8 @@ export type RecipeUpdateWithoutImagesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUpdateManyWithoutRecipeNestedInput
@@ -806,6 +919,7 @@ export type RecipeUpdateWithoutImagesInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutRecipesNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateWithoutImagesInput = {
@@ -814,12 +928,15 @@ export type RecipeUncheckedUpdateWithoutImagesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedUpdateManyWithoutRecipeNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeCreateWithoutFavoriteRecipesInput = {
@@ -827,6 +944,8 @@ export type RecipeCreateWithoutFavoriteRecipesInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientCreateNestedManyWithoutRecipeInput
@@ -834,6 +953,7 @@ export type RecipeCreateWithoutFavoriteRecipesInput = {
   images?: Prisma.RecipeImageCreateNestedManyWithoutRecipeInput
   category: Prisma.CategoryCreateNestedOneWithoutRecipesInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUncheckedCreateWithoutFavoriteRecipesInput = {
@@ -842,12 +962,15 @@ export type RecipeUncheckedCreateWithoutFavoriteRecipesInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput
   images?: Prisma.RecipeImageUncheckedCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeCreateOrConnectWithoutFavoriteRecipesInput = {
@@ -871,6 +994,8 @@ export type RecipeUpdateWithoutFavoriteRecipesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUpdateManyWithoutRecipeNestedInput
@@ -878,6 +1003,7 @@ export type RecipeUpdateWithoutFavoriteRecipesInput = {
   images?: Prisma.RecipeImageUpdateManyWithoutRecipeNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutRecipesNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateWithoutFavoriteRecipesInput = {
@@ -886,12 +1012,15 @@ export type RecipeUncheckedUpdateWithoutFavoriteRecipesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedUpdateManyWithoutRecipeNestedInput
   images?: Prisma.RecipeImageUncheckedUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeCreateWithoutRecentlyViewedRecipesInput = {
@@ -899,6 +1028,8 @@ export type RecipeCreateWithoutRecentlyViewedRecipesInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientCreateNestedManyWithoutRecipeInput
@@ -906,6 +1037,7 @@ export type RecipeCreateWithoutRecentlyViewedRecipesInput = {
   images?: Prisma.RecipeImageCreateNestedManyWithoutRecipeInput
   category: Prisma.CategoryCreateNestedOneWithoutRecipesInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUncheckedCreateWithoutRecentlyViewedRecipesInput = {
@@ -914,12 +1046,15 @@ export type RecipeUncheckedCreateWithoutRecentlyViewedRecipesInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput
   images?: Prisma.RecipeImageUncheckedCreateNestedManyWithoutRecipeInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeCreateOrConnectWithoutRecentlyViewedRecipesInput = {
@@ -943,6 +1078,8 @@ export type RecipeUpdateWithoutRecentlyViewedRecipesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUpdateManyWithoutRecipeNestedInput
@@ -950,6 +1087,7 @@ export type RecipeUpdateWithoutRecentlyViewedRecipesInput = {
   images?: Prisma.RecipeImageUpdateManyWithoutRecipeNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutRecipesNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateWithoutRecentlyViewedRecipesInput = {
@@ -958,12 +1096,99 @@ export type RecipeUncheckedUpdateWithoutRecentlyViewedRecipesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedUpdateManyWithoutRecipeNestedInput
   images?: Prisma.RecipeImageUncheckedUpdateManyWithoutRecipeNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutRecipeNestedInput
+}
+
+export type RecipeCreateWithoutRatingsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ingredients?: Prisma.RecipeIngredientCreateNestedManyWithoutRecipeInput
+  user?: Prisma.UserCreateNestedOneWithoutRecipesInput
+  images?: Prisma.RecipeImageCreateNestedManyWithoutRecipeInput
+  category: Prisma.CategoryCreateNestedOneWithoutRecipesInput
+  favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutRecipeInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutRecipeInput
+}
+
+export type RecipeUncheckedCreateWithoutRatingsInput = {
+  id?: string
+  title: string
+  description?: string | null
+  userId?: string | null
+  cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
+  categoryId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ingredients?: Prisma.RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput
+  images?: Prisma.RecipeImageUncheckedCreateNestedManyWithoutRecipeInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutRecipeInput
+}
+
+export type RecipeCreateOrConnectWithoutRatingsInput = {
+  where: Prisma.RecipeWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecipeCreateWithoutRatingsInput, Prisma.RecipeUncheckedCreateWithoutRatingsInput>
+}
+
+export type RecipeUpsertWithoutRatingsInput = {
+  update: Prisma.XOR<Prisma.RecipeUpdateWithoutRatingsInput, Prisma.RecipeUncheckedUpdateWithoutRatingsInput>
+  create: Prisma.XOR<Prisma.RecipeCreateWithoutRatingsInput, Prisma.RecipeUncheckedCreateWithoutRatingsInput>
+  where?: Prisma.RecipeWhereInput
+}
+
+export type RecipeUpdateToOneWithWhereWithoutRatingsInput = {
+  where?: Prisma.RecipeWhereInput
+  data: Prisma.XOR<Prisma.RecipeUpdateWithoutRatingsInput, Prisma.RecipeUncheckedUpdateWithoutRatingsInput>
+}
+
+export type RecipeUpdateWithoutRatingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ingredients?: Prisma.RecipeIngredientUpdateManyWithoutRecipeNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecipesNestedInput
+  images?: Prisma.RecipeImageUpdateManyWithoutRecipeNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutRecipesNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutRecipeNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutRecipeNestedInput
+}
+
+export type RecipeUncheckedUpdateWithoutRatingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ingredients?: Prisma.RecipeIngredientUncheckedUpdateManyWithoutRecipeNestedInput
+  images?: Prisma.RecipeImageUncheckedUpdateManyWithoutRecipeNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeCreateWithoutCategoryInput = {
@@ -971,6 +1196,8 @@ export type RecipeCreateWithoutCategoryInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientCreateNestedManyWithoutRecipeInput
@@ -978,6 +1205,7 @@ export type RecipeCreateWithoutCategoryInput = {
   images?: Prisma.RecipeImageCreateNestedManyWithoutRecipeInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeUncheckedCreateWithoutCategoryInput = {
@@ -986,12 +1214,15 @@ export type RecipeUncheckedCreateWithoutCategoryInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput
   images?: Prisma.RecipeImageUncheckedCreateNestedManyWithoutRecipeInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutRecipeInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutRecipeInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutRecipeInput
 }
 
 export type RecipeCreateOrConnectWithoutCategoryInput = {
@@ -1025,6 +1256,8 @@ export type RecipeCreateManyUserInput = {
   title: string
   description?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1035,6 +1268,8 @@ export type RecipeUpdateWithoutUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUpdateManyWithoutRecipeNestedInput
@@ -1042,6 +1277,7 @@ export type RecipeUpdateWithoutUserInput = {
   category?: Prisma.CategoryUpdateOneRequiredWithoutRecipesNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateWithoutUserInput = {
@@ -1049,6 +1285,8 @@ export type RecipeUncheckedUpdateWithoutUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1056,6 +1294,7 @@ export type RecipeUncheckedUpdateWithoutUserInput = {
   images?: Prisma.RecipeImageUncheckedUpdateManyWithoutRecipeNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateManyWithoutUserInput = {
@@ -1063,6 +1302,8 @@ export type RecipeUncheckedUpdateManyWithoutUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1074,6 +1315,8 @@ export type RecipeCreateManyCategoryInput = {
   description?: string | null
   userId?: string | null
   cookingTimeInMinutes?: number
+  avgRating?: number
+  ratingsCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1083,6 +1326,8 @@ export type RecipeUpdateWithoutCategoryInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUpdateManyWithoutRecipeNestedInput
@@ -1090,6 +1335,7 @@ export type RecipeUpdateWithoutCategoryInput = {
   images?: Prisma.RecipeImageUpdateManyWithoutRecipeNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateWithoutCategoryInput = {
@@ -1098,12 +1344,15 @@ export type RecipeUncheckedUpdateWithoutCategoryInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ingredients?: Prisma.RecipeIngredientUncheckedUpdateManyWithoutRecipeNestedInput
   images?: Prisma.RecipeImageUncheckedUpdateManyWithoutRecipeNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutRecipeNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutRecipeNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutRecipeNestedInput
 }
 
 export type RecipeUncheckedUpdateManyWithoutCategoryInput = {
@@ -1112,6 +1361,8 @@ export type RecipeUncheckedUpdateManyWithoutCategoryInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cookingTimeInMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  avgRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1126,6 +1377,7 @@ export type RecipeCountOutputType = {
   images: number
   favoriteRecipes: number
   recentlyViewedRecipes: number
+  ratings: number
 }
 
 export type RecipeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1133,6 +1385,7 @@ export type RecipeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   images?: boolean | RecipeCountOutputTypeCountImagesArgs
   favoriteRecipes?: boolean | RecipeCountOutputTypeCountFavoriteRecipesArgs
   recentlyViewedRecipes?: boolean | RecipeCountOutputTypeCountRecentlyViewedRecipesArgs
+  ratings?: boolean | RecipeCountOutputTypeCountRatingsArgs
 }
 
 /**
@@ -1173,6 +1426,13 @@ export type RecipeCountOutputTypeCountRecentlyViewedRecipesArgs<ExtArgs extends 
   where?: Prisma.RecentlyViewedRecipeWhereInput
 }
 
+/**
+ * RecipeCountOutputType without action
+ */
+export type RecipeCountOutputTypeCountRatingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecipeRatingWhereInput
+}
+
 
 export type RecipeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1180,6 +1440,8 @@ export type RecipeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   description?: boolean
   userId?: boolean
   cookingTimeInMinutes?: boolean
+  avgRating?: boolean
+  ratingsCount?: boolean
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1189,6 +1451,7 @@ export type RecipeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   favoriteRecipes?: boolean | Prisma.Recipe$favoriteRecipesArgs<ExtArgs>
   recentlyViewedRecipes?: boolean | Prisma.Recipe$recentlyViewedRecipesArgs<ExtArgs>
+  ratings?: boolean | Prisma.Recipe$ratingsArgs<ExtArgs>
   _count?: boolean | Prisma.RecipeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recipe"]>
 
@@ -1198,6 +1461,8 @@ export type RecipeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   description?: boolean
   userId?: boolean
   cookingTimeInMinutes?: boolean
+  avgRating?: boolean
+  ratingsCount?: boolean
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1211,6 +1476,8 @@ export type RecipeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   description?: boolean
   userId?: boolean
   cookingTimeInMinutes?: boolean
+  avgRating?: boolean
+  ratingsCount?: boolean
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1224,12 +1491,14 @@ export type RecipeSelectScalar = {
   description?: boolean
   userId?: boolean
   cookingTimeInMinutes?: boolean
+  avgRating?: boolean
+  ratingsCount?: boolean
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RecipeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "userId" | "cookingTimeInMinutes" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["recipe"]>
+export type RecipeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "userId" | "cookingTimeInMinutes" | "avgRating" | "ratingsCount" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["recipe"]>
 export type RecipeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ingredients?: boolean | Prisma.Recipe$ingredientsArgs<ExtArgs>
   user?: boolean | Prisma.Recipe$userArgs<ExtArgs>
@@ -1237,6 +1506,7 @@ export type RecipeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   favoriteRecipes?: boolean | Prisma.Recipe$favoriteRecipesArgs<ExtArgs>
   recentlyViewedRecipes?: boolean | Prisma.Recipe$recentlyViewedRecipesArgs<ExtArgs>
+  ratings?: boolean | Prisma.Recipe$ratingsArgs<ExtArgs>
   _count?: boolean | Prisma.RecipeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RecipeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1257,6 +1527,7 @@ export type $RecipePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     category: Prisma.$CategoryPayload<ExtArgs>
     favoriteRecipes: Prisma.$FavoriteRecipePayload<ExtArgs>[]
     recentlyViewedRecipes: Prisma.$RecentlyViewedRecipePayload<ExtArgs>[]
+    ratings: Prisma.$RecipeRatingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1264,6 +1535,8 @@ export type $RecipePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     description: string | null
     userId: string | null
     cookingTimeInMinutes: number
+    avgRating: number
+    ratingsCount: number
     categoryId: string
     createdAt: Date
     updatedAt: Date
@@ -1667,6 +1940,7 @@ export interface Prisma__RecipeClient<T, Null = never, ExtArgs extends runtime.T
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   favoriteRecipes<T extends Prisma.Recipe$favoriteRecipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Recipe$favoriteRecipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recentlyViewedRecipes<T extends Prisma.Recipe$recentlyViewedRecipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Recipe$recentlyViewedRecipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecentlyViewedRecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ratings<T extends Prisma.Recipe$ratingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Recipe$ratingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecipeRatingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1701,6 +1975,8 @@ export interface RecipeFieldRefs {
   readonly description: Prisma.FieldRef<"Recipe", 'String'>
   readonly userId: Prisma.FieldRef<"Recipe", 'String'>
   readonly cookingTimeInMinutes: Prisma.FieldRef<"Recipe", 'Int'>
+  readonly avgRating: Prisma.FieldRef<"Recipe", 'Float'>
+  readonly ratingsCount: Prisma.FieldRef<"Recipe", 'Int'>
   readonly categoryId: Prisma.FieldRef<"Recipe", 'String'>
   readonly createdAt: Prisma.FieldRef<"Recipe", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Recipe", 'DateTime'>
@@ -2212,6 +2488,30 @@ export type Recipe$recentlyViewedRecipesArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.RecentlyViewedRecipeScalarFieldEnum | Prisma.RecentlyViewedRecipeScalarFieldEnum[]
+}
+
+/**
+ * Recipe.ratings
+ */
+export type Recipe$ratingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecipeRating
+   */
+  select?: Prisma.RecipeRatingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecipeRating
+   */
+  omit?: Prisma.RecipeRatingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecipeRatingInclude<ExtArgs> | null
+  where?: Prisma.RecipeRatingWhereInput
+  orderBy?: Prisma.RecipeRatingOrderByWithRelationInput | Prisma.RecipeRatingOrderByWithRelationInput[]
+  cursor?: Prisma.RecipeRatingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecipeRatingScalarFieldEnum | Prisma.RecipeRatingScalarFieldEnum[]
 }
 
 /**

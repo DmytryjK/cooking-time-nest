@@ -46,6 +46,10 @@ import {
 } from './pipes/recipe-images-validation.pipe';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { RecipeResponse } from './types/recipe-response.type';
+import {
+  RecipeRatingDto,
+  RecipeRatingResponseDto,
+} from './dto/recipe-rating.dto';
 
 @ApiTags('Recipes')
 @Controller('recipes')
@@ -188,6 +192,34 @@ export class RecipesController {
     @CurrentUser() user?: UserModel,
   ): Promise<Recipe> {
     return this.recipeService.createRecipe({ files, recipe, user });
+  }
+
+  @Post(':id/rating')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Set recipe rating',
+    description: 'Update recipe rating',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Recipe ID',
+    type: String,
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Rating updated',
+    type: RecipeRatingResponseDto,
+  })
+  setRecipeRating(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser()
+    user: UserModel,
+    @Body()
+    { rating }: RecipeRatingDto,
+  ): Promise<RecipeRatingResponseDto> {
+    return this.recipeService.setRating(user.id, id, rating);
   }
 
   @Put('update/:id')

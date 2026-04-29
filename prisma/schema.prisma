@@ -19,17 +19,18 @@ enum UserRole {
 }
 
 model User {
-  id                      String                 @id @default(uuid())
-  email                   String                 @unique
-  password                String
-  name                    String?
-  recipes                 Recipe[]
-  refreshTokens           RefreshToken[]
-  role                    UserRole               @default(user)
-  createdAt               DateTime               @default(now())
-  updatedAt               DateTime               @updatedAt
-  favoriteRecipes         FavoriteRecipe[]
-  recentlyViewedRecipes   RecentlyViewedRecipe[]
+  id                    String                 @id @default(uuid())
+  email                 String                 @unique
+  password              String
+  name                  String?
+  recipes               Recipe[]
+  refreshTokens         RefreshToken[]
+  role                  UserRole               @default(user)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  favoriteRecipes       FavoriteRecipe[]
+  recentlyViewedRecipes RecentlyViewedRecipe[]
+  ratings               RecipeRating[]
 }
 
 model Recipe {
@@ -41,12 +42,15 @@ model Recipe {
   user                  User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   images                RecipeImage[]
   cookingTimeInMinutes  Int                    @default(0)
+  avgRating             Float                  @default(0)
+  ratingsCount          Int                    @default(0)
   categoryId            String
   category              Category               @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
   favoriteRecipes       FavoriteRecipe[]
   recentlyViewedRecipes RecentlyViewedRecipe[]
+  ratings               RecipeRating[]
 
   @@index([createdAt])
   @@index([title])
@@ -90,6 +94,16 @@ model RecentlyViewedRecipe {
   viewedAt DateTime @default(now())
   recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, recipeId])
+}
+
+model RecipeRating {
+  recipeId String
+  userId   String
+  rating   Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, recipeId])
 }

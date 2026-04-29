@@ -57,6 +57,7 @@ export const ModelName = {
   RecipeImage: 'RecipeImage',
   FavoriteRecipe: 'FavoriteRecipe',
   RecentlyViewedRecipe: 'RecentlyViewedRecipe',
+  RecipeRating: 'RecipeRating',
   Category: 'Category',
   RefreshToken: 'RefreshToken'
 } as const
@@ -96,6 +97,8 @@ export const RecipeScalarFieldEnum = {
   description: 'description',
   userId: 'userId',
   cookingTimeInMinutes: 'cookingTimeInMinutes',
+  avgRating: 'avgRating',
+  ratingsCount: 'ratingsCount',
   categoryId: 'categoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -142,6 +145,15 @@ export const RecentlyViewedRecipeScalarFieldEnum = {
 } as const
 
 export type RecentlyViewedRecipeScalarFieldEnum = (typeof RecentlyViewedRecipeScalarFieldEnum)[keyof typeof RecentlyViewedRecipeScalarFieldEnum]
+
+
+export const RecipeRatingScalarFieldEnum = {
+  recipeId: 'recipeId',
+  userId: 'userId',
+  rating: 'rating'
+} as const
+
+export type RecipeRatingScalarFieldEnum = (typeof RecipeRatingScalarFieldEnum)[keyof typeof RecipeRatingScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {

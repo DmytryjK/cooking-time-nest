@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 
 class IngredientResponseDto {
   @Exclude()
@@ -63,6 +63,12 @@ export class RecipeResponseDto {
 
   @ApiProperty({ description: 'Is recipe in favorites', example: false })
   isFavorite!: boolean;
+
+  @ApiProperty({
+    description: 'Rating for recipe from current user',
+    example: 3.5,
+  })
+  userRating?: number;
 
   @ApiProperty({
     description: 'Creation date',
