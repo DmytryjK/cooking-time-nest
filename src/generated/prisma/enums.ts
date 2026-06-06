@@ -23,3 +23,12 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const VideoRecipeParseStatus = {
+  SUCCESS: 'SUCCESS',
+  NOT_A_RECIPE: 'NOT_A_RECIPE',
+  EXTRACT_FAILED: 'EXTRACT_FAILED'
+} as const
+
+export type VideoRecipeParseStatus = (typeof VideoRecipeParseStatus)[keyof typeof VideoRecipeParseStatus]

@@ -29,6 +29,25 @@ export const config = {
     apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
 
+  ytdlp: {
+    timeoutMs: Number(process.env.YTDLP_TIMEOUT_MS) || 120_000,
+    retryCount: Number(process.env.YTDLP_RETRY_COUNT) || 4,
+    retryDelayMs: Number(process.env.YTDLP_RETRY_DELAY_MS) || 500,
+  },
+
+  openai: {
+    apiKey: process.env.OPENAI_API_KEY,
+    model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+    temperature: Number(process.env.OPENAI_TEMPERATURE) || 0.2,
+    maxTokens: Number(process.env.OPENAI_MAX_TOKENS) || 8192,
+    timeoutMs: Number(process.env.OPENAI_TIMEOUT_MS) || 60_000,
+  },
+
+  unsplash: {
+    accessKey: process.env.UNSPLASH_ACCESS_KEY,
+    timeoutMs: Number(process.env.UNSPLASH_TIMEOUT_MS) || 10_000,
+  },
+
   jwt: {
     accessSecret: process.env.JWT_ACCESS_SECRET,
     accessExpiresIn: (process.env.JWT_ACCESS_EXPIRES_IN ||

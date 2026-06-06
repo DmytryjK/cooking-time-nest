@@ -44,6 +44,7 @@
     "cloudinary": "^2.9.0",
     "cookie-parser": "^1.4.7",
     "ioredis": "^5.9.3",
+    "openai": "^6.39.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",

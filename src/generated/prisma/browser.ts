@@ -53,6 +53,11 @@ export type RecentlyViewedRecipe = Prisma.RecentlyViewedRecipeModel
  */
 export type RecipeRating = Prisma.RecipeRatingModel
 /**
+ * Model VideoRecipeParse
+ * 
+ */
+export type VideoRecipeParse = Prisma.VideoRecipeParseModel
+/**
  * Model Category
  * 
  */

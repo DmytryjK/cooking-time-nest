@@ -1,19 +1,39 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { PrismaService } from '@/database/prisma/prisma.service';
 import { Recipe, Prisma } from '@/generated/prisma/client';
 import { CreateRecipeDto, GetRecipesQueryDto } from './dto';
 import { UserModel } from '@/generated/prisma/models';
 import type { RecipeImageFiles } from './pipes/recipe-images-validation.pipe';
+import {
+  assertRecipeImageInput,
+  publicIdFromImageUrl,
+  type ResolvedRecipeImage,
+} from './pipes/recipe-images-validation.pipe';
 import { CloudinaryService } from '@/services/cloudinary';
 import { RecipeResponse } from './types/recipe-response.type';
 import { RecipeInteractionsFacade } from '../recipe-interactions/recipe-interactions.facade';
+import { OpenAiService, RecipeLlmParseResult } from '@/services/openai';
+import { YtdlpService } from '@/services/ytdlp';
+import { GeneratedRecipeImage, UnsplashService } from '@/services/unsplash';
+import type { VideoRecipeParse } from '@/generated/prisma/client';
 
 @Injectable()
 export class RecipesService {
+  private readonly logger = new Logger(RecipesService.name);
+
   constructor(
     private prisma: PrismaService,
     private cloudinaryService: CloudinaryService,
     private recipeInteractionsFacade: RecipeInteractionsFacade,
+    private ytdlpService: YtdlpService,
+    private openAiService: OpenAiService,
+    private unsplashService: UnsplashService,
   ) {}
 
   private async buildWhere({
@@ -91,13 +111,62 @@ export class RecipesService {
 
     return { where, matchedMap };
   }
-  private async uploadRecipeImages(files: RecipeImageFiles) {
-    const [mainImageData, previewImageData] = await Promise.all([
-      this.cloudinaryService.uploadImage(files.mainImage![0]),
-      this.cloudinaryService.uploadImage(files.previewImage![0]),
+  private async resolveRecipeImages(
+    files: RecipeImageFiles,
+    mainImageUrl?: string,
+    previewImageUrl?: string,
+  ): Promise<{
+    mainImage: ResolvedRecipeImage;
+    previewImage: ResolvedRecipeImage;
+  }> {
+    assertRecipeImageInput(files, mainImageUrl, previewImageUrl);
+
+    const resolveOne = async (
+      file: Express.Multer.File[] | undefined,
+      url: string | undefined,
+    ): Promise<ResolvedRecipeImage> => {
+      if (file?.[0]) {
+        const uploaded = await this.cloudinaryService.uploadImage(file[0]);
+
+        return {
+          imageUrl: uploaded.secure_url,
+          publicId: uploaded.public_id,
+        };
+      }
+
+      const imageUrl = url!.trim();
+
+      return {
+        imageUrl,
+        publicId: publicIdFromImageUrl(imageUrl),
+      };
+    };
+
+    const [mainImage, previewImage] = await Promise.all([
+      resolveOne(files.mainImage, mainImageUrl),
+      resolveOne(files.previewImage, previewImageUrl),
     ]);
 
-    return { mainImageData, previewImageData };
+    return { mainImage, previewImage };
+  }
+
+  private isCloudinaryImage(imageUrl: string): boolean {
+    return imageUrl.includes('res.cloudinary.com');
+  }
+
+  private async deleteStoredImageIfCloudinary(
+    imageUrl: string,
+    publicId: string,
+  ): Promise<void> {
+    if (!this.isCloudinaryImage(imageUrl)) {
+      return;
+    }
+
+    try {
+      await this.cloudinaryService.deleteImage(publicId);
+    } catch {
+      // ignore cleanup errors for stale/missing cloudinary assets
+    }
   }
 
   async recipe(
@@ -129,6 +198,135 @@ export class RecipesService {
       }));
 
     return { ...recipe, userRating: userRating?.rating };
+  }
+
+  async generateRecipeFromVideoUrl(
+    url: string,
+    user: UserModel,
+  ): Promise<{ recipe: RecipeLlmParseResult }> {
+    const normalizedUrl = url.trim().split('?')[0];
+    this.logger.log(`recipe LLM test started: ${normalizedUrl}`);
+
+    const cachedVideo = await this.prisma.videoRecipeParse.findFirst({
+      where: {
+        userId: user.id,
+        OR: [{ normalizedUrl: normalizedUrl }, { sourceUrl: normalizedUrl }],
+      },
+    });
+
+    if (cachedVideo) {
+      await new Promise((resolve) => setTimeout(resolve, 60000));
+      return {
+        recipe: {
+          ...this.mapVideoParseToRecipe(cachedVideo),
+          images: this.mapVideoParseToImages(cachedVideo),
+        },
+      };
+    }
+
+    const extract = await this.ytdlpService.extract(normalizedUrl, {
+      includeSubtitles: true,
+    });
+
+    const recipe = await this.openAiService.parseRecipeFromVideo(extract);
+
+    if (!recipe.isRecipe) {
+      throw new UnprocessableEntityException('В відео не знайдено рецепт');
+    }
+
+    const images = await this.unsplashService.findRecipeImages(
+      recipe.imageSearchQuery || '',
+    );
+
+    await this.prisma.videoRecipeParse.upsert({
+      where: {
+        userId_platformVideoId: {
+          userId: user.id,
+          platformVideoId: extract.platformVideoId,
+        },
+      },
+      create: {
+        userId: user.id,
+        platformVideoId: extract.platformVideoId,
+        sourceUrl: extract.sourceUrl,
+        normalizedUrl: normalizedUrl,
+        status: 'SUCCESS',
+        title: recipe.title,
+        description: recipe.description,
+        cookingTimeInMinutes: recipe.cookingTimeInMinutes,
+        ingredients: recipe.ingredients as unknown as Prisma.InputJsonValue,
+        suggestedCategoryName: recipe.suggestedCategoryName,
+        imageSearchQuery: recipe.imageSearchQuery,
+        images: images as unknown as Prisma.InputJsonValue,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+      },
+      update: {
+        userId: user.id,
+        platformVideoId: extract.platformVideoId,
+        sourceUrl: extract.sourceUrl,
+        normalizedUrl: normalizedUrl,
+        status: 'SUCCESS',
+        title: recipe.title,
+        description: recipe.description,
+        cookingTimeInMinutes: recipe.cookingTimeInMinutes,
+        ingredients: recipe.ingredients as unknown as Prisma.InputJsonValue,
+        suggestedCategoryName: recipe.suggestedCategoryName,
+        imageSearchQuery: recipe.imageSearchQuery,
+        images: images as unknown as Prisma.InputJsonValue,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+      },
+    });
+
+    this.logger.log(`recipe LLM test finished, video_url=${extract.sourceUrl}`);
+
+    return { recipe: { ...recipe, images } };
+  }
+
+  private mapVideoParseToRecipe(
+    cached: VideoRecipeParse,
+  ): RecipeLlmParseResult {
+    const ingredients = Array.isArray(cached.ingredients)
+      ? (cached.ingredients as unknown as RecipeLlmParseResult['ingredients'])
+      : [];
+
+    return {
+      isRecipe: true,
+      title: cached.title ?? undefined,
+      description: cached.description ?? undefined,
+      cookingTimeInMinutes: cached.cookingTimeInMinutes ?? undefined,
+      ingredients,
+      suggestedCategoryName: cached.suggestedCategoryName ?? undefined,
+      imageSearchQuery: cached.imageSearchQuery ?? undefined,
+    };
+  }
+
+  private mapVideoParseToImages(
+    cached: VideoRecipeParse,
+  ): GeneratedRecipeImage[] {
+    if (!Array.isArray(cached.images)) {
+      return [];
+    }
+
+    return cached.images
+      .map((item) => {
+        if (!item || typeof item !== 'object') {
+          return null;
+        }
+
+        const image = item as Record<string, unknown>;
+        const imageUrl =
+          typeof image.imageUrl === 'string' ? image.imageUrl.trim() : '';
+        const publicId =
+          typeof image.publicId === 'string' ? image.publicId.trim() : '';
+        const type = image.type;
+
+        if (!imageUrl || !publicId || (type !== 'MAIN' && type !== 'PREVIEW')) {
+          return null;
+        }
+
+        return { imageUrl, publicId, type };
+      })
+      .filter((item): item is GeneratedRecipeImage => item !== null);
   }
 
   async recipes(
@@ -225,11 +423,16 @@ export class RecipesService {
       ingredients,
       categoryId,
       cookingTimeInMinutes,
+      mainImage: mainImageUrl,
+      previewImage: previewImageUrl,
     } = recipe;
     const authorId = user?.id;
 
-    const { mainImageData, previewImageData } =
-      await this.uploadRecipeImages(files);
+    const { mainImage, previewImage } = await this.resolveRecipeImages(
+      files,
+      mainImageUrl,
+      previewImageUrl,
+    );
 
     return this.prisma.recipe.create({
       data: {
@@ -247,13 +450,13 @@ export class RecipesService {
         images: {
           create: [
             {
-              imageUrl: previewImageData.secure_url,
-              publicId: previewImageData.public_id,
+              imageUrl: previewImage.imageUrl,
+              publicId: previewImage.publicId,
               type: 'PREVIEW',
             },
             {
-              imageUrl: mainImageData.secure_url,
-              publicId: mainImageData.public_id,
+              imageUrl: mainImage.imageUrl,
+              publicId: mainImage.publicId,
               type: 'MAIN',
             },
           ],
@@ -270,7 +473,12 @@ export class RecipesService {
 
   async updateRecipe(
     id: string,
-    { ingredients, ...fields }: Partial<CreateRecipeDto>,
+    {
+      ingredients,
+      mainImage,
+      previewImage,
+      ...fields
+    }: Partial<CreateRecipeDto>,
     newImages?: Partial<RecipeImageFiles>,
   ): Promise<Recipe> {
     const data: Prisma.RecipeUpdateInput = { ...fields };
@@ -285,18 +493,58 @@ export class RecipesService {
     const updateImage = async (
       type: 'MAIN' | 'PREVIEW',
       newImage: Express.Multer.File[] | undefined,
-    ) => {
-      if (!newImage) return null;
+      newImageUrl: string | undefined,
+    ): Promise<ResolvedRecipeImage | null> => {
+      const hasFile = Boolean(newImage?.[0]);
+      const hasUrl = Boolean(newImageUrl?.trim());
+
+      if (!hasFile && !hasUrl) {
+        return null;
+      }
+
+      if (hasFile && hasUrl) {
+        throw new HttpException(
+          `Provide ${type === 'MAIN' ? 'mainImage' : 'previewImage'} either as a file or as a URL, not both`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
 
       const current = currentRecipe.images.find((img) => img.type === type);
-      const uploaded = await this.cloudinaryService.uploadImage(newImage[0]);
-      if (current) await this.cloudinaryService.deleteImage(current.publicId);
-      return uploaded;
+
+      if (hasFile) {
+        const uploaded = await this.cloudinaryService.uploadImage(newImage![0]);
+
+        if (current) {
+          await this.deleteStoredImageIfCloudinary(
+            current.imageUrl,
+            current.publicId,
+          );
+        }
+
+        return {
+          imageUrl: uploaded.secure_url,
+          publicId: uploaded.public_id,
+        };
+      }
+
+      const imageUrl = newImageUrl!.trim();
+
+      if (current) {
+        await this.deleteStoredImageIfCloudinary(
+          current.imageUrl,
+          current.publicId,
+        );
+      }
+
+      return {
+        imageUrl,
+        publicId: publicIdFromImageUrl(imageUrl),
+      };
     };
 
     const [newMain, newPreview] = await Promise.all([
-      updateImage('MAIN', newImages?.mainImage),
-      updateImage('PREVIEW', newImages?.previewImage),
+      updateImage('MAIN', newImages?.mainImage, mainImage),
+      updateImage('PREVIEW', newImages?.previewImage, previewImage),
     ]);
 
     if (ingredients) {
@@ -319,13 +567,13 @@ export class RecipesService {
         deleteMany: { type: { in: typesToDelete } },
         create: [
           newMain && {
-            imageUrl: newMain.secure_url,
-            publicId: newMain.public_id,
+            imageUrl: newMain.imageUrl,
+            publicId: newMain.publicId,
             type: 'MAIN',
           },
           newPreview && {
-            imageUrl: newPreview.secure_url,
-            publicId: newPreview.public_id,
+            imageUrl: newPreview.imageUrl,
+            publicId: newPreview.publicId,
             type: 'PREVIEW',
           },
         ].filter(

@@ -1,45 +1,36 @@
-# Этап сборки
+# Build stage
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Копируем файлы зависимостей
 COPY package.json yarn.lock ./
 COPY prisma ./prisma/
+COPY prisma.config.ts ./
 
-# Устанавливаем зависимости
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile \
+  && yarn prisma generate
 
-# Генерируем Prisma Client (делаем это ДО копирования остальных файлов)
-RUN yarn prisma generate
-
-# Копируем остальные файлы
 COPY . .
 
-# Собираем приложение
 RUN yarn build
 
-# Продакшн этап
+# Production stage
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Копируем package.json и yarn.lock
+RUN apk add --no-cache python3 py3-pip ffmpeg \
+  && pip3 install --no-cache-dir yt-dlp --break-system-packages
+
 COPY package.json yarn.lock ./
 COPY prisma ./prisma/
+COPY prisma.config.ts ./
 
-# Устанавливаем только production зависимости
-RUN yarn install --production --frozen-lockfile
+RUN yarn install --production --frozen-lockfile \
+  && yarn prisma generate
 
-# Генерируем Prisma Client в продакшн образе
-RUN yarn prisma generate
-
-# Копируем собранное приложение
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/dist/prisma.config.js ./
 
-# Открываем порт
-EXPOSE 3000
+EXPOSE 5000
 
-# Запускаем приложение
 CMD ["node", "dist/src/main"]

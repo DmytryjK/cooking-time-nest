@@ -35,8 +35,9 @@ services:
     container_name: nestjs_app
     restart: always
     ports:
-      - '3000:3000'
+      - '${PORT:-5000}:5000'
     environment:
+      PORT: ${PORT:-5000}
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/nestdb
       REDIS_URL: redis://redis:6379
       NODE_ENV: production
@@ -45,7 +46,7 @@ services:
       - redis
     networks:
       - app-network
-    command: sh -c "yarn prisma migrate deploy && node dist/main"
+    command: sh -c "yarn prisma migrate deploy && node dist/src/main"
 
 volumes:
   postgres_data:

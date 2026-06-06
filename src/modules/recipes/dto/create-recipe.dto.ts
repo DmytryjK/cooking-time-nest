@@ -7,6 +7,7 @@ import {
   ValidateNested,
   ArrayMinSize,
   IsNumber,
+  IsUrl,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
@@ -72,4 +73,24 @@ export class CreateRecipeDto {
   @ValidateNested({ each: true })
   @Type(() => IngredientDto)
   ingredients!: IngredientDto[];
+
+  @ApiProperty({
+    description: 'Main image URL (use instead of mainImage file upload)',
+    example: 'https://images.unsplash.com/photo-1633337474564-1d9478ca4e2e?w=1080',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  @IsUrl({ protocols: ['http', 'https'], require_tld: false })
+  mainImage?: string;
+
+  @ApiProperty({
+    description: 'Preview image URL (use instead of previewImage file upload)',
+    example: 'https://images.unsplash.com/photo-1588013273468-315fd88ea34c?w=400',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  @IsUrl({ protocols: ['http', 'https'], require_tld: false })
+  previewImage?: string;
 }

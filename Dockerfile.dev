@@ -1,0 +1,17 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+RUN apk add --no-cache python3 py3-pip ffmpeg \
+  && pip3 install --no-cache-dir yt-dlp --break-system-packages
+
+COPY package.json yarn.lock ./
+COPY prisma ./prisma/
+COPY prisma.config.ts ./
+
+RUN yarn install --frozen-lockfile \
+  && yarn prisma generate
+
+EXPOSE 5000
+
+CMD ["yarn", "dev"]

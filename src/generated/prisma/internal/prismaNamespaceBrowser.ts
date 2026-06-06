@@ -58,6 +58,7 @@ export const ModelName = {
   FavoriteRecipe: 'FavoriteRecipe',
   RecentlyViewedRecipe: 'RecentlyViewedRecipe',
   RecipeRating: 'RecipeRating',
+  VideoRecipeParse: 'VideoRecipeParse',
   Category: 'Category',
   RefreshToken: 'RefreshToken'
 } as const
@@ -156,6 +157,28 @@ export const RecipeRatingScalarFieldEnum = {
 export type RecipeRatingScalarFieldEnum = (typeof RecipeRatingScalarFieldEnum)[keyof typeof RecipeRatingScalarFieldEnum]
 
 
+export const VideoRecipeParseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  platformVideoId: 'platformVideoId',
+  sourceUrl: 'sourceUrl',
+  normalizedUrl: 'normalizedUrl',
+  status: 'status',
+  title: 'title',
+  description: 'description',
+  cookingTimeInMinutes: 'cookingTimeInMinutes',
+  ingredients: 'ingredients',
+  suggestedCategoryName: 'suggestedCategoryName',
+  imageSearchQuery: 'imageSearchQuery',
+  images: 'images',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VideoRecipeParseScalarFieldEnum = (typeof VideoRecipeParseScalarFieldEnum)[keyof typeof VideoRecipeParseScalarFieldEnum]
+
+
 export const CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name'
@@ -184,6 +207,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -198,4 +229,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

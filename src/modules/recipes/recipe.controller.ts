@@ -32,6 +32,8 @@ import {
   UpdateRecipeDto,
   RecipeResponseDto,
   GetRecipesQueryDto,
+  GenerateRecipeDto,
+  GenerateRecipeResponseDto,
 } from './dto';
 import type { UserModel } from '@/generated/prisma/models';
 import {
@@ -73,7 +75,23 @@ export class RecipesController {
     return this.recipeService.favoriteRecipes(user);
   }
 
-  @Get('/recently-viewed-recipes')
+  @Post('generate-recipe-from-video-url')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Generate recipe from video url',
+    description: 'Generate recipe from video url',
+  })
+  @ApiBody({ type: GenerateRecipeDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Recipe generated',
+    type: GenerateRecipeResponseDto,
+  })
+  testLlm(@Body() { url }: GenerateRecipeDto, @CurrentUser() user: UserModel) {
+    return this.recipeService.generateRecipeFromVideoUrl(url, user);
+  }
+
+  @Get('recently-viewed-recipes')
   @UseGuards(JwtAuthGuard)
   @SerializeOptions({ type: RecipeResponseDto })
   @ApiOperation({
@@ -164,8 +182,14 @@ export class RecipesController {
     schema: {
       type: 'object',
       properties: {
-        mainImage: { type: 'string', format: 'binary' },
-        previewImage: { type: 'string', format: 'binary' },
+        mainImage: {
+          oneOf: [{ type: 'string', format: 'binary' }, { type: 'string' }],
+          description: 'Main image file or URL',
+        },
+        previewImage: {
+          oneOf: [{ type: 'string', format: 'binary' }, { type: 'string' }],
+          description: 'Preview image file or URL',
+        },
       },
     },
   })
@@ -236,8 +260,14 @@ export class RecipesController {
     schema: {
       type: 'object',
       properties: {
-        mainImage: { type: 'string', format: 'binary' },
-        previewImage: { type: 'string', format: 'binary' },
+        mainImage: {
+          oneOf: [{ type: 'string', format: 'binary' }, { type: 'string' }],
+          description: 'Main image file or URL',
+        },
+        previewImage: {
+          oneOf: [{ type: 'string', format: 'binary' }, { type: 'string' }],
+          description: 'Preview image file or URL',
+        },
       },
     },
   })

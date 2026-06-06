@@ -199,6 +199,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   recipes?: Prisma.RecipeListRelationFilter
+  videoRecipeParses?: Prisma.VideoRecipeParseListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   favoriteRecipes?: Prisma.FavoriteRecipeListRelationFilter
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeListRelationFilter
@@ -214,6 +215,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   recipes?: Prisma.RecipeOrderByRelationAggregateInput
+  videoRecipeParses?: Prisma.VideoRecipeParseOrderByRelationAggregateInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   favoriteRecipes?: Prisma.FavoriteRecipeOrderByRelationAggregateInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeOrderByRelationAggregateInput
@@ -232,6 +234,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   recipes?: Prisma.RecipeListRelationFilter
+  videoRecipeParses?: Prisma.VideoRecipeParseListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   favoriteRecipes?: Prisma.FavoriteRecipeListRelationFilter
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeListRelationFilter
@@ -273,6 +276,7 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
@@ -288,6 +292,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
@@ -303,6 +308,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
@@ -318,6 +324,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
@@ -468,6 +475,20 @@ export type UserUpdateOneRequiredWithoutRatingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRatingsInput, Prisma.UserUpdateWithoutRatingsInput>, Prisma.UserUncheckedUpdateWithoutRatingsInput>
 }
 
+export type UserCreateNestedOneWithoutVideoRecipeParsesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVideoRecipeParsesInput, Prisma.UserUncheckedCreateWithoutVideoRecipeParsesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVideoRecipeParsesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutVideoRecipeParsesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVideoRecipeParsesInput, Prisma.UserUncheckedCreateWithoutVideoRecipeParsesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVideoRecipeParsesInput
+  upsert?: Prisma.UserUpsertWithoutVideoRecipeParsesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVideoRecipeParsesInput, Prisma.UserUpdateWithoutVideoRecipeParsesInput>, Prisma.UserUncheckedUpdateWithoutVideoRecipeParsesInput>
+}
+
 export type UserCreateNestedOneWithoutRefreshTokensInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
@@ -490,6 +511,7 @@ export type UserCreateWithoutRecipesInput = {
   role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  videoRecipeParses?: Prisma.VideoRecipeParseCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
@@ -504,6 +526,7 @@ export type UserUncheckedCreateWithoutRecipesInput = {
   role?: $Enums.UserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
@@ -534,6 +557,7 @@ export type UserUpdateWithoutRecipesInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  videoRecipeParses?: Prisma.VideoRecipeParseUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
@@ -548,6 +572,7 @@ export type UserUncheckedUpdateWithoutRecipesInput = {
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
@@ -563,6 +588,7 @@ export type UserCreateWithoutFavoriteRecipesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
   ratings?: Prisma.RecipeRatingCreateNestedManyWithoutUserInput
@@ -577,6 +603,7 @@ export type UserUncheckedCreateWithoutFavoriteRecipesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
   ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutUserInput
@@ -607,6 +634,7 @@ export type UserUpdateWithoutFavoriteRecipesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
   ratings?: Prisma.RecipeRatingUpdateManyWithoutUserNestedInput
@@ -621,6 +649,7 @@ export type UserUncheckedUpdateWithoutFavoriteRecipesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
   ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutUserNestedInput
@@ -635,6 +664,7 @@ export type UserCreateWithoutRecentlyViewedRecipesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
   ratings?: Prisma.RecipeRatingCreateNestedManyWithoutUserInput
@@ -649,6 +679,7 @@ export type UserUncheckedCreateWithoutRecentlyViewedRecipesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
   ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutUserInput
@@ -679,6 +710,7 @@ export type UserUpdateWithoutRecentlyViewedRecipesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
   ratings?: Prisma.RecipeRatingUpdateManyWithoutUserNestedInput
@@ -693,6 +725,7 @@ export type UserUncheckedUpdateWithoutRecentlyViewedRecipesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
   ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutUserNestedInput
@@ -707,6 +740,7 @@ export type UserCreateWithoutRatingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
@@ -721,6 +755,7 @@ export type UserUncheckedCreateWithoutRatingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
@@ -751,6 +786,7 @@ export type UserUpdateWithoutRatingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
@@ -765,9 +801,86 @@ export type UserUncheckedUpdateWithoutRatingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutVideoRecipeParsesInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
+  ratings?: Prisma.RecipeRatingCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutVideoRecipeParsesInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
+  ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutVideoRecipeParsesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutVideoRecipeParsesInput, Prisma.UserUncheckedCreateWithoutVideoRecipeParsesInput>
+}
+
+export type UserUpsertWithoutVideoRecipeParsesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutVideoRecipeParsesInput, Prisma.UserUncheckedUpdateWithoutVideoRecipeParsesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutVideoRecipeParsesInput, Prisma.UserUncheckedCreateWithoutVideoRecipeParsesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutVideoRecipeParsesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutVideoRecipeParsesInput, Prisma.UserUncheckedUpdateWithoutVideoRecipeParsesInput>
+}
+
+export type UserUpdateWithoutVideoRecipeParsesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
+  ratings?: Prisma.RecipeRatingUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutVideoRecipeParsesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
+  recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
+  ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRefreshTokensInput = {
@@ -779,6 +892,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeCreateNestedManyWithoutUserInput
   ratings?: Prisma.RecipeRatingCreateNestedManyWithoutUserInput
@@ -793,6 +907,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutUserInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedCreateNestedManyWithoutUserInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedCreateNestedManyWithoutUserInput
   ratings?: Prisma.RecipeRatingUncheckedCreateNestedManyWithoutUserInput
@@ -823,6 +938,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUpdateManyWithoutUserNestedInput
   ratings?: Prisma.RecipeRatingUpdateManyWithoutUserNestedInput
@@ -837,6 +953,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutUserNestedInput
+  videoRecipeParses?: Prisma.VideoRecipeParseUncheckedUpdateManyWithoutUserNestedInput
   favoriteRecipes?: Prisma.FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
   recentlyViewedRecipes?: Prisma.RecentlyViewedRecipeUncheckedUpdateManyWithoutUserNestedInput
   ratings?: Prisma.RecipeRatingUncheckedUpdateManyWithoutUserNestedInput
@@ -849,6 +966,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
 
 export type UserCountOutputType = {
   recipes: number
+  videoRecipeParses: number
   refreshTokens: number
   favoriteRecipes: number
   recentlyViewedRecipes: number
@@ -857,6 +975,7 @@ export type UserCountOutputType = {
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recipes?: boolean | UserCountOutputTypeCountRecipesArgs
+  videoRecipeParses?: boolean | UserCountOutputTypeCountVideoRecipeParsesArgs
   refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   favoriteRecipes?: boolean | UserCountOutputTypeCountFavoriteRecipesArgs
   recentlyViewedRecipes?: boolean | UserCountOutputTypeCountRecentlyViewedRecipesArgs
@@ -878,6 +997,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  */
 export type UserCountOutputTypeCountRecipesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.RecipeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountVideoRecipeParsesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VideoRecipeParseWhereInput
 }
 
 /**
@@ -918,6 +1044,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   recipes?: boolean | Prisma.User$recipesArgs<ExtArgs>
+  videoRecipeParses?: boolean | Prisma.User$videoRecipeParsesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   favoriteRecipes?: boolean | Prisma.User$favoriteRecipesArgs<ExtArgs>
   recentlyViewedRecipes?: boolean | Prisma.User$recentlyViewedRecipesArgs<ExtArgs>
@@ -958,6 +1085,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recipes?: boolean | Prisma.User$recipesArgs<ExtArgs>
+  videoRecipeParses?: boolean | Prisma.User$videoRecipeParsesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   favoriteRecipes?: boolean | Prisma.User$favoriteRecipesArgs<ExtArgs>
   recentlyViewedRecipes?: boolean | Prisma.User$recentlyViewedRecipesArgs<ExtArgs>
@@ -971,6 +1099,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     recipes: Prisma.$RecipePayload<ExtArgs>[]
+    videoRecipeParses: Prisma.$VideoRecipeParsePayload<ExtArgs>[]
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
     favoriteRecipes: Prisma.$FavoriteRecipePayload<ExtArgs>[]
     recentlyViewedRecipes: Prisma.$RecentlyViewedRecipePayload<ExtArgs>[]
@@ -1379,6 +1508,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   recipes<T extends Prisma.User$recipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  videoRecipeParses<T extends Prisma.User$videoRecipeParsesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$videoRecipeParsesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VideoRecipeParsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favoriteRecipes<T extends Prisma.User$favoriteRecipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteRecipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recentlyViewedRecipes<T extends Prisma.User$recentlyViewedRecipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recentlyViewedRecipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecentlyViewedRecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1828,6 +1958,30 @@ export type User$recipesArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.RecipeScalarFieldEnum | Prisma.RecipeScalarFieldEnum[]
+}
+
+/**
+ * User.videoRecipeParses
+ */
+export type User$videoRecipeParsesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VideoRecipeParse
+   */
+  select?: Prisma.VideoRecipeParseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VideoRecipeParse
+   */
+  omit?: Prisma.VideoRecipeParseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VideoRecipeParseInclude<ExtArgs> | null
+  where?: Prisma.VideoRecipeParseWhereInput
+  orderBy?: Prisma.VideoRecipeParseOrderByWithRelationInput | Prisma.VideoRecipeParseOrderByWithRelationInput[]
+  cursor?: Prisma.VideoRecipeParseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VideoRecipeParseScalarFieldEnum | Prisma.VideoRecipeParseScalarFieldEnum[]
 }
 
 /**

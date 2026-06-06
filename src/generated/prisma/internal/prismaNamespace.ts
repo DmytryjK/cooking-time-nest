@@ -391,6 +391,7 @@ export const ModelName = {
   FavoriteRecipe: 'FavoriteRecipe',
   RecentlyViewedRecipe: 'RecentlyViewedRecipe',
   RecipeRating: 'RecipeRating',
+  VideoRecipeParse: 'VideoRecipeParse',
   Category: 'Category',
   RefreshToken: 'RefreshToken'
 } as const
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "recipe" | "recipeIngredient" | "recipeImage" | "favoriteRecipe" | "recentlyViewedRecipe" | "recipeRating" | "category" | "refreshToken"
+    modelProps: "user" | "recipe" | "recipeIngredient" | "recipeImage" | "favoriteRecipe" | "recentlyViewedRecipe" | "recipeRating" | "videoRecipeParse" | "category" | "refreshToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -930,6 +931,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    VideoRecipeParse: {
+      payload: Prisma.$VideoRecipeParsePayload<ExtArgs>
+      fields: Prisma.VideoRecipeParseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VideoRecipeParseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VideoRecipeParseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>
+        }
+        findFirst: {
+          args: Prisma.VideoRecipeParseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VideoRecipeParseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>
+        }
+        findMany: {
+          args: Prisma.VideoRecipeParseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>[]
+        }
+        create: {
+          args: Prisma.VideoRecipeParseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>
+        }
+        createMany: {
+          args: Prisma.VideoRecipeParseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VideoRecipeParseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>[]
+        }
+        delete: {
+          args: Prisma.VideoRecipeParseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>
+        }
+        update: {
+          args: Prisma.VideoRecipeParseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>
+        }
+        deleteMany: {
+          args: Prisma.VideoRecipeParseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VideoRecipeParseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VideoRecipeParseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>[]
+        }
+        upsert: {
+          args: Prisma.VideoRecipeParseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoRecipeParsePayload>
+        }
+        aggregate: {
+          args: Prisma.VideoRecipeParseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVideoRecipeParse>
+        }
+        groupBy: {
+          args: Prisma.VideoRecipeParseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VideoRecipeParseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VideoRecipeParseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VideoRecipeParseCountAggregateOutputType> | number
+        }
+      }
+    }
     Category: {
       payload: Prisma.$CategoryPayload<ExtArgs>
       fields: Prisma.CategoryFieldRefs
@@ -1195,6 +1270,28 @@ export const RecipeRatingScalarFieldEnum = {
 export type RecipeRatingScalarFieldEnum = (typeof RecipeRatingScalarFieldEnum)[keyof typeof RecipeRatingScalarFieldEnum]
 
 
+export const VideoRecipeParseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  platformVideoId: 'platformVideoId',
+  sourceUrl: 'sourceUrl',
+  normalizedUrl: 'normalizedUrl',
+  status: 'status',
+  title: 'title',
+  description: 'description',
+  cookingTimeInMinutes: 'cookingTimeInMinutes',
+  ingredients: 'ingredients',
+  suggestedCategoryName: 'suggestedCategoryName',
+  imageSearchQuery: 'imageSearchQuery',
+  images: 'images',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VideoRecipeParseScalarFieldEnum = (typeof VideoRecipeParseScalarFieldEnum)[keyof typeof VideoRecipeParseScalarFieldEnum]
+
+
 export const CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name'
@@ -1223,6 +1320,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -1237,6 +1342,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1326,6 +1440,34 @@ export type EnumRecipeImageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'RecipeImageType[]'
  */
 export type ListEnumRecipeImageTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipeImageType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VideoRecipeParseStatus'
+ */
+export type EnumVideoRecipeParseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoRecipeParseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'VideoRecipeParseStatus[]'
+ */
+export type ListEnumVideoRecipeParseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoRecipeParseStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1437,6 +1579,7 @@ export type GlobalOmitConfig = {
   favoriteRecipe?: Prisma.FavoriteRecipeOmit
   recentlyViewedRecipe?: Prisma.RecentlyViewedRecipeOmit
   recipeRating?: Prisma.RecipeRatingOmit
+  videoRecipeParse?: Prisma.VideoRecipeParseOmit
   category?: Prisma.CategoryOmit
   refreshToken?: Prisma.RefreshTokenOmit
 }
