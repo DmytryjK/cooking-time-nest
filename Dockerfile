@@ -7,7 +7,8 @@ COPY package.json yarn.lock ./
 COPY prisma ./prisma/
 COPY prisma.config.ts ./
 
-RUN yarn install --frozen-lockfile \
+# builder needs devDependencies (typescript, @nestjs/cli) to compile src → dist
+RUN yarn install --frozen-lockfile --production=false \
   && yarn prisma generate
 
 COPY . .
@@ -33,4 +34,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 5000
 
-CMD ["node", "dist/src/main"]
+CMD ["node", "dist/main"]
