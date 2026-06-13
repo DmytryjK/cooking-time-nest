@@ -34,7 +34,6 @@ services:
     environment:
       PORT: ${PORT:-5000}
       NODE_ENV: development
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-nestdb}
       REDIS_URL: redis://redis:6379
       CHOKIDAR_USEPOLLING: 'true'
       CHOKIDAR_INTERVAL: '1000'
