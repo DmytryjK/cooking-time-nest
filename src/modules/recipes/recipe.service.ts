@@ -40,7 +40,7 @@ export class RecipesService {
     search,
     ingredients,
     categories,
-  }: GetRecipesQueryDto): Promise<{
+  }: Omit<GetRecipesQueryDto, 'page' | 'limit'>): Promise<{
     where: Prisma.RecipeWhereInput;
     matchedMap: Map<string, Set<string>>;
   }> {
@@ -330,12 +330,12 @@ export class RecipesService {
   }
 
   async recipes(
-    query: GetRecipesQueryDto,
+    {page, limit = 12, ...query}: GetRecipesQueryDto,
     user?: UserModel,
-  ): Promise<RecipeResponse[]> {
+  ): Promise<{totalCount: number, page: number, limit: number, recipes: RecipeResponse[]}> {
     const { where, matchedMap } = await this.buildWhere(query);
 
-    const recipes = await this.prisma.recipe.findMany({
+    const [totalCount, recipes] = await Promise.all ([this.prisma.recipe.count({ where }), this.prisma.recipe.findMany({
       where,
       include: {
         category: true,
@@ -344,7 +344,7 @@ export class RecipesService {
         favoriteRecipes: user
           ? {
               where: {
-                userId: user?.id,
+                userId: user.id,
               },
               select: {
                 userId: true,
@@ -355,9 +355,11 @@ export class RecipesService {
       orderBy: {
         createdAt: 'desc',
       },
-    });
+      skip: (page - 1) * limit,
+      take: limit,
+    })]);
 
-    return recipes
+    return {totalCount, page, limit, recipes: recipes
       .map((recipe) => ({
         ...recipe,
         isFavorite: recipe.favoriteRecipes?.length > 0,
@@ -369,7 +371,7 @@ export class RecipesService {
           .sort((a, b) => Number(b.matched) - Number(a.matched)),
         matchedCount: matchedMap.get(recipe.id)?.size ?? 0,
       }))
-      .sort((a, b) => b.matchedCount - a.matchedCount);
+      .sort((a, b) => b.matchedCount - a.matchedCount)};
   }
 
   async favoriteRecipes(user: UserModel): Promise<Recipe[]> {

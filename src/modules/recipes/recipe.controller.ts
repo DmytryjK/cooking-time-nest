@@ -164,7 +164,7 @@ export class RecipesController {
   getAllRecipes(
     @CurrentUser() user: UserModel | undefined,
     @Query() query: GetRecipesQueryDto,
-  ): Promise<RecipeResponse[]> {
+  ): Promise<{totalCount: number, page: number, limit: number, recipes: RecipeResponse[]}> {
     return this.recipeService.recipes(query, user);
   }
 
