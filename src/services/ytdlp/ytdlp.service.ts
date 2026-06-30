@@ -285,13 +285,20 @@ export class YtdlpService {
           {
             exitCode: code,
             stderrLength: stderr.length,
+            stderrPreview: stderr.slice(0, 2000),
+            stdoutPreview: stdout.slice(0, 500),
           },
         );
 
         if (code === 0) {
+          if (stderr) {
+            this.logger.warn(`yt-dlp stderr (exit 0): ${stderr.slice(0, 2000)}`);
+          }
           resolve({ stdout: stdout.trim(), stderr: stderr.trim() });
           return;
         }
+
+        this.logger.error(`yt-dlp exit code ${code}: ${stderr || stdout}`);
 
         reject(
           new Error(
@@ -302,20 +309,36 @@ export class YtdlpService {
     });
   }
 
+  // private async runOrFail(
+  //   args: string[],
+  // ): Promise<{ stdout: string; stderr: string }> {
+  //   try {
+  //     return await this.run(args);
+  //   } catch (error) {
+  //     const message =
+  //       error instanceof Error ? error.message : 'yt-dlp execution failed';
+
+  //     this.logger.warn(`yt-dlp failed: ${message}`);
+
+  //     throw new UnprocessableEntityException(
+  //       'Не вдалось отримати дані з відео',
+  //     );
+  //   }
+  // }
   private async runOrFail(
-    args: string[],
-  ): Promise<{ stdout: string; stderr: string }> {
-    try {
-      return await this.run(args);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'yt-dlp execution failed';
+  args: string[],
+): Promise<{ stdout: string; stderr: string }> {
+  try {
+    return await this.run(args);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'yt-dlp execution failed';
 
-      this.logger.warn(`yt-dlp failed: ${message}`);
+    this.logger.error(`yt-dlp failed: ${message}`);
 
-      throw new UnprocessableEntityException(
-        'Не вдалось отримати дані з відео',
-      );
-    }
+    throw new UnprocessableEntityException(
+      'Не вдалось отримати дані з відео',
+    );
   }
+}
 }
