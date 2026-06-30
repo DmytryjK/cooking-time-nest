@@ -111,6 +111,39 @@ export class RecipesService {
 
     return { where, matchedMap };
   }
+  private normalizeVideoUrl(rawUrl: string): string {
+    const trimmed = rawUrl.trim();
+    let parsed: URL;
+
+    try {
+      parsed = new URL(trimmed);
+    } catch {
+      return trimmed;
+    }
+
+    const host = parsed.hostname.replace(/^www\./, '');
+
+    if (host === 'youtube.com' || host === 'm.youtube.com') {
+      const shortsMatch = parsed.pathname.match(/^\/shorts\/([^/]+)/);
+      if (shortsMatch) {
+        return `https://www.youtube.com/watch?v=${shortsMatch[1]}`;
+      }
+
+      const videoId = parsed.searchParams.get('v');
+      return videoId
+        ? `https://www.youtube.com/watch?v=${videoId}`
+        : trimmed;
+    }
+
+    if (host === 'youtu.be') {
+      const videoId = parsed.pathname.replace(/^\//, '').split('/')[0];
+      return videoId
+        ? `https://www.youtube.com/watch?v=${videoId}`
+        : trimmed;
+    }
+
+    return `${parsed.origin}${parsed.pathname}`;
+  }
   private async resolveRecipeImages(
     files: RecipeImageFiles,
     mainImageUrl?: string,
@@ -204,7 +237,8 @@ export class RecipesService {
     url: string,
     user: UserModel,
   ): Promise<{ recipe: RecipeLlmParseResult }> {
-    const normalizedUrl = url.trim().split('?')[0];
+    // const normalizedUrl = url.trim().split('?')[0];
+    const normalizedUrl = this.normalizeVideoUrl(url);
     this.logger.log(`recipe LLM test started: ${normalizedUrl}`);
 
     const cachedVideo = await this.prisma.videoRecipeParse.findFirst({
